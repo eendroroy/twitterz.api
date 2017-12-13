@@ -31,12 +31,12 @@ databaseChangeLog:
                   constraints:
                     nullable: true
               - column:
-                  name: fullname
+                  name: full_name
                   type: varchar(255)
                   constraints:
                     nullable: true
               - column:
-                  name: username
+                  name: user_name
                   type: varchar(255)
                   constraints:
                     nullable: false
