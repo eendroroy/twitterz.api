@@ -7,7 +7,7 @@ class ServletInitializer extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		application.sources(TZApplication)
+		application.sources TZApplication
 	}
 
 }

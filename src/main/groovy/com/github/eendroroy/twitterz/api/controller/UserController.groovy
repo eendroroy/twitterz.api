@@ -1,6 +1,7 @@
 package com.github.eendroroy.twitterz.api.controller
 
 import com.github.eendroroy.twitterz.api.entity.User
+import com.github.eendroroy.twitterz.api.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
 import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
@@ -25,9 +25,7 @@ class UserController {
 
     @RequestMapping(path = "register", method = RequestMethod.POST)
     @ResponseBody
-    long register(
-            HttpServletRequest request, HttpServletResponse response
-    ) throws ParseException {
+    long register(HttpServletRequest request) throws ParseException {
         String userName = request.getParameter "userName"
         String email = request.getParameter "email"
         String password = request.getParameter "password"

@@ -18,7 +18,7 @@ import javax.validation.constraints.Past
 @Entity
 @Table(name = "users")
 @Data
-public class User {
+class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="user_id_seq")
     @SequenceGenerator(name="user_id_seq", sequenceName="users_user_id_seq", allocationSize=1)

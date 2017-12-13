@@ -16,7 +16,5 @@ interface UserService {
 
     User saveUser(User user)
 
-    User currentUser()
-
     User findUserByToken(String token)
 }
