@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
-class TwitterZapiApplication {
+class TZApplication {
 
 	static void main(String[] args) {
-		SpringApplication.run TwitterZapiApplication, args
+		SpringApplication.run TZApplication, args
 	}
 }
