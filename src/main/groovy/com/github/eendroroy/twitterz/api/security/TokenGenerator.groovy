@@ -7,19 +7,20 @@ import java.security.SecureRandom
 /**
  * @author indrajit
  */
-public class TokenGenerator {
 
-    @Bean("generator")
+class TokenGenerator {
+
+    @Bean('generator')
     Generator generator() {
-        return new Generator()
+        new Generator()
     }
 
-    public class Generator{
-        public String token(){
+    class Generator {
+        String token() {
             SecureRandom sr = new SecureRandom()
             byte[] bytes = new byte[16]
             sr.nextBytes(bytes)
-            return new String(bytes)
+            new String(bytes)
         }
     }
 

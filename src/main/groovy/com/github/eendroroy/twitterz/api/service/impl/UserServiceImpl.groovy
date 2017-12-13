@@ -13,41 +13,41 @@ import org.springframework.stereotype.Service
  * @author indrajit
  */
 
-@Service("userService")
+@Service('userService')
 class UserServiceImpl implements UserService {
 
-    @Qualifier("userRepository")
+    @Qualifier('userRepository')
     @Autowired
-    private transient UserRepository userRepository
+    private UserRepository userRepository
 
-    @Qualifier("encoder")
+    @Qualifier('encoder')
     @Autowired
     PasswordEncoder.Encoder passwordEncoder
 
     @Override
-    public List<User> allUsers() {
-        return userRepository.findAll()
+    List<User> allUsers() {
+        userRepository.findAll()
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email)
+    User findUserByEmail(String email) {
+        userRepository.findByEmail(email)
     }
 
     @Override
-    public User findUserByUserName(String userName) {
-        return userRepository.findByUserName(userName)
+    User findUserByUserName(String userName) {
+        userRepository.findByUserName(userName)
     }
 
     @Override
-    public User saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()))
+    User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.password))
         user.setActive(1)
-        return userRepository.save(user)
+        userRepository.save(user)
     }
 
     @Override
-    public User findUserByToken(String token) {
-        return userRepository.findByAccessToken(token)
+    User findUserByToken(String token) {
+        userRepository.findByAccessToken(token)
     }
 }

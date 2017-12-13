@@ -11,14 +11,14 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class PasswordEncoder {
 
-    @Bean("encoder")
-    Encoder encoder(){
-        return new Encoder()
+    @Bean('encoder')
+    Encoder encoder() {
+        new Encoder()
     }
 
-    public class Encoder {
-        public String encode(String password){
-            return Crypt.crypt(password)
+    class Encoder {
+        String encode(String password) {
+            Crypt.crypt(password)
         }
     }
 }
