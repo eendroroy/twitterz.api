@@ -37,6 +37,7 @@ configurations {
 }
 
 dependencies {
+	compile('commons-codec:commons-codec')
 	compile("org.liquibase:liquibase-core")
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-hateoas')
