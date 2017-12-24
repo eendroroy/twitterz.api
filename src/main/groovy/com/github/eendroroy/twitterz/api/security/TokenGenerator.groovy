@@ -1,13 +1,19 @@
 package com.github.eendroroy.twitterz.api.security
 
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.impl.crypto.MacProvider
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 
-import java.security.SecureRandom
+import java.security.Key
 
 /**
+ *
  * @author indrajit
  */
 
+@Configuration
 class TokenGenerator {
 
     @Bean('generator')
@@ -17,10 +23,8 @@ class TokenGenerator {
 
     class Generator {
         String token() {
-            SecureRandom sr = new SecureRandom()
-            byte[] bytes = new byte[16]
-            sr.nextBytes(bytes)
-            new String(bytes)
+            Key key = MacProvider.generateKey()
+            Jwts.builder().setSubject('twitter.z.api').signWith(SignatureAlgorithm.HS512, key).compact()
         }
     }
 
