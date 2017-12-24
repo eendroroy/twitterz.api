@@ -2,7 +2,6 @@ package com.github.eendroroy.twitterz.api.service.impl
 
 import com.github.eendroroy.twitterz.api.entity.User
 import com.github.eendroroy.twitterz.api.repository.UserRepository
-import com.github.eendroroy.twitterz.api.security.PasswordEncoder
 import com.github.eendroroy.twitterz.api.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
