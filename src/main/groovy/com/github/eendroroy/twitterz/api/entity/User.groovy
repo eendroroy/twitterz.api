@@ -3,10 +3,17 @@ package com.github.eendroroy.twitterz.api.entity
 import org.hibernate.validator.constraints.Length
 import org.springframework.format.annotation.DateTimeFormat
 
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.SequenceGenerator
+import javax.persistence.Table
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Past
+
 /**
  *
  * @author indrajit
