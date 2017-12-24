@@ -9,14 +9,19 @@ import org.springframework.test.context.junit4.SpringRunner
 
 import static org.assertj.core.api.Assertions.assertThat
 
+/**
+ *
+ * @author indrajit
+ */
+
 @RunWith(SpringRunner)
 @SpringBootTest
 class TZApplicationTests {
 
-    @Autowired UserService userService
+    @Autowired private UserService userService
 
-	@Test
-    void exampleTest() throws Exception {
+    @Test
+    void exampleTest() {
         assertThat(userService.allUsers().size()).isEqualTo(0)
     }
 }

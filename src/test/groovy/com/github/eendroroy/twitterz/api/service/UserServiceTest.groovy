@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 
 import static org.assertj.core.api.Assertions.assertThat
+
 /**
  *
  * @author indrajit
@@ -18,21 +19,21 @@ import static org.assertj.core.api.Assertions.assertThat
 @RunWith(SpringRunner)
 @SpringBootTest
 class UserServiceTest {
-    @Autowired UserService userService
-    @Autowired UserRepository userRepository
+    @Autowired private UserService userService
+    @Autowired private UserRepository userRepository
 
     @Test
-    void initialUsersCountIsZero() throws Exception {
+    void initialUsersCountIsZero() {
         assertThat(userService.allUsers().size()).isEqualTo(0)
     }
 
     @After
-    void tearDown(){
+    void tearDown() {
         userRepository.deleteAll()
     }
 
     @Test
-    void createUser() throws Exception {
+    void testCreateUser() {
         User user1 = new User()
         user1.userName = 'user1'
         user1.password = 'password1'
@@ -51,7 +52,7 @@ class UserServiceTest {
     }
 
     @Test
-    void findUserByEmail() throws Exception {
+    void testFindUserByEmail() {
         User user3 = new User()
         user3.userName = 'user3'
         user3.password = 'password3'
