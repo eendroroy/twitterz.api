@@ -37,14 +37,14 @@ class UserController {
             consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE,],
             produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE,]
     )
-    @ResponseBody
+    @ResponseBodyg
     Map<Object, Object> register(@RequestBody User user, HttpServletResponse response) throws ParseException {
         try {
             user.password = passwordEncoder.encode(user.password)
             user.active = 1
             userService.saveUser(user)
             user.password = '****'
-            [_embedded:[user:user], success:false,]
+            [success:true, _embedded:[user:user],]
         } catch (DataIntegrityViolationException exception) {
             response.status = 400
             [success:false, details:exception.message,]
