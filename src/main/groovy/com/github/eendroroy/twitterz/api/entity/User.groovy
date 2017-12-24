@@ -3,18 +3,10 @@ package com.github.eendroroy.twitterz.api.entity
 import org.hibernate.validator.constraints.Length
 import org.springframework.format.annotation.DateTimeFormat
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.SequenceGenerator
-import javax.persistence.Table
-import javax.persistence.Id
+import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
 import javax.validation.constraints.Past
-
 /**
  *
  * @author indrajit
@@ -51,7 +43,6 @@ class User {
 
     @Column(name = 'date_of_birth')
     @DateTimeFormat(pattern = 'dd/MM/yyyy')
-    @NotNull(message = '*Please provide your date of birth')
     @Past(message = '*Date of birth can not be in future')
     private Date dateOfBirth
 
