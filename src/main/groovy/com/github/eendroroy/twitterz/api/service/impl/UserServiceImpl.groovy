@@ -35,11 +35,6 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    User findUserByUserName(String userName) {
-        userRepository.findByUserName(userName)
-    }
-
-    @Override
     User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.password))
         user.setActive(1)

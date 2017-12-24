@@ -12,8 +12,6 @@ interface UserService {
 
     User findUserByEmail(String email)
 
-    User findUserByUserName(String userName)
-
     User saveUser(User user)
 
     User findUserByToken(String token)
