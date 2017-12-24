@@ -48,7 +48,6 @@ class TokenController {
         if (user == null) { return [success:false, details:'user not found',] }
         if (passwordEncoder.match(password, user.password)) {
             String token = tokenGenerator.token()
-            user.password = password
             user.accessToken = token
             userService.saveUser(user)
             return [success:true, token:token,]

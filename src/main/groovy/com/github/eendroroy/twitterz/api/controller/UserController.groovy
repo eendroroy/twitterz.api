@@ -1,8 +1,10 @@
 package com.github.eendroroy.twitterz.api.controller
 
 import com.github.eendroroy.twitterz.api.entity.User
+import com.github.eendroroy.twitterz.api.security.PasswordEncoder
 import com.github.eendroroy.twitterz.api.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.hateoas.MediaTypes
 import org.springframework.http.MediaType
@@ -26,6 +28,10 @@ class UserController {
     @Autowired
     private UserService userService
 
+    @Qualifier('encoder')
+    @Autowired
+    private PasswordEncoder.Encoder passwordEncoder
+
     @RequestMapping(
             path = 'register', method = RequestMethod.POST,
             consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE,],
@@ -34,11 +40,12 @@ class UserController {
     @ResponseBody
     Map<Object, Object> register(@RequestBody User user, HttpServletResponse response) throws ParseException {
         try {
+            user.password = passwordEncoder.encode(user.password)
+            user.active = 1
             userService.saveUser(user)
             user.password = '****'
             [_embedded:[user:user], success:false,]
         } catch (DataIntegrityViolationException exception) {
-            // exception.printStackTrace()
             response.status = 400
             [success:false, details:exception.message,]
         }

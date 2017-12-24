@@ -20,10 +20,6 @@ class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository
 
-    @Qualifier('encoder')
-    @Autowired
-    PasswordEncoder.Encoder passwordEncoder
-
     @Override
     List<User> allUsers() {
         userRepository.findAll()
@@ -36,8 +32,6 @@ class UserServiceImpl implements UserService {
 
     @Override
     User saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.password))
-        user.setActive(1)
         userRepository.save(user)
     }
 
