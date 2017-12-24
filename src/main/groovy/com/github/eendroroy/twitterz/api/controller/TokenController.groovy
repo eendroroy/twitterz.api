@@ -51,7 +51,7 @@ class TokenController {
             user.password = password
             user.accessToken = token
             userService.saveUser(user)
-            return [token:token]
+            return [success:true, token:token,]
         }
         [success:false, details:'password did not match',]
     }
