@@ -37,7 +37,7 @@ class UserController {
             consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE,],
             produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE,]
     )
-    @ResponseBodyg
+    @ResponseBody
     Map<Object, Object> register(@RequestBody User user, HttpServletResponse response) throws ParseException {
         try {
             user.password = passwordEncoder.encode(user.password)
