@@ -22,4 +22,4 @@ This project is intended to be a safe, welcoming space for collaboration, and co
 
 ## License
 
-The project is available as open source under the terms of the [GPL-3.0 License](https://opensource.org/licenses/GPL-3.0).
+The project is available as open source under the terms of the [MIT](https://opensource.org/licenses/MIT).
