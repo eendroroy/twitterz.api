@@ -1,10 +1,11 @@
 package com.github.eendroroy.twitterz.api.security
 
-import org.apache.commons.codec.digest.Crypt
+import org.mindrot.jbcrypt.BCrypt
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 /**
+ *
  * @author indrajit
  */
 
@@ -18,7 +19,11 @@ class PasswordEncoder {
 
     class Encoder {
         String encode(String password) {
-            Crypt.crypt(password)
+            BCrypt.hashpw(password, BCrypt.gensalt())
+        }
+
+        boolean match(String plainPassword, String hashedPassword) {
+            BCrypt.checkpw(plainPassword, hashedPassword)
         }
     }
 }
