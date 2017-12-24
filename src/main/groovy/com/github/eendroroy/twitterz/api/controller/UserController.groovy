@@ -3,15 +3,14 @@ package com.github.eendroroy.twitterz.api.controller
 import com.github.eendroroy.twitterz.api.entity.User
 import com.github.eendroroy.twitterz.api.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.hateoas.MediaTypes
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.*
 
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 import java.text.ParseException
-import java.text.SimpleDateFormat
-
 /**
  *
  * @author indrajit
@@ -23,24 +22,23 @@ class UserController {
     @Autowired
     private UserService userService
 
-    @RequestMapping(path = 'register', method = RequestMethod.POST)
+    @RequestMapping(
+            path = 'register', method = RequestMethod.POST,
+            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
+            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
+    )
     @ResponseBody
-    long register(HttpServletRequest request) throws ParseException {
-        String userName = request.getParameter 'userName'
-        String email = request.getParameter 'email'
-        String password = request.getParameter 'password'
-        String date = request.getParameter 'date_of_birth'
-        Date dateOfBirth = null
-        if (date != null) {
-            dateOfBirth = new SimpleDateFormat('dd/MM/yyyy', Locale.US).parse(date)
+    Map<Object, Object> register(
+            @RequestBody User user, HttpServletRequest request, HttpServletResponse response
+    ) throws ParseException {
+        try {
+            userService.saveUser(user)
+            user.password = '****'
+            [_embedded: [user: user], success: false] as Map<Object, Object>
+        } catch (DataIntegrityViolationException exception){
+            exception.printStackTrace()
+            response.status = 400
+            [success: false, details: exception.message] as Map<Object, Object>
         }
-
-        User user = new User()
-        user.setEmail(email)
-        user.setUserName(userName)
-        user.setPassword(password)
-        user.setDateOfBirth(dateOfBirth)
-
-        userService.saveUser(user).id
     }
 }
