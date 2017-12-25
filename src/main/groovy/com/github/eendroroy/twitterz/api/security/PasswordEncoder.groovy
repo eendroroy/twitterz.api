@@ -11,19 +11,11 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class PasswordEncoder {
-
-    @Bean('encoder')
-    Encoder encoder() {
-        new Encoder()
+    static String encode(String password) {
+        BCrypt.hashpw(password, BCrypt.gensalt())
     }
 
-    class Encoder {
-        String encode(String password) {
-            BCrypt.hashpw(password, BCrypt.gensalt())
-        }
-
-        boolean match(String plainPassword, String hashedPassword) {
-            BCrypt.checkpw(plainPassword, hashedPassword)
-        }
+    static boolean match(String plainPassword, String hashedPassword) {
+        BCrypt.checkpw(plainPassword, hashedPassword)
     }
 }
