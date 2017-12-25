@@ -25,6 +25,10 @@ plugins {
     id 'war'
 }
 
+testlogger {
+    theme 'mocha'
+}
+
 group = 'com.github.eendroroy'
 version = '0.0.1-SNAPSHOT'
 description = "Twitter for Zombies API."
