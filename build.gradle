@@ -19,6 +19,7 @@ plugins {
     id 'com.adarshr.test-logger' version '1.1.2'
     id 'groovy'
     id 'idea'
+    id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.4.RELEASE'
     id 'org.liquibase.gradle' version '1.2.4'
     id 'org.springframework.boot' version '1.5.9.RELEASE'
@@ -43,6 +44,8 @@ repositories {
 configurations {
     providedRuntime
 }
+
+test { finalizedBy jacocoTestReport }
 
 dependencies {
     compile('commons-codec:commons-codec')
