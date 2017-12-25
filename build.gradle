@@ -14,13 +14,15 @@ buildscript {
     }
 }
 
-apply plugin: 'codenarc'
-apply plugin: 'groovy'
-apply plugin: 'idea'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'org.liquibase.gradle'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'war'
+plugins {
+    id 'codenarc'
+    id 'groovy'
+    id 'idea'
+    id 'io.spring.dependency-management' version '1.0.4.RELEASE'
+    id 'org.liquibase.gradle' version '1.2.4'
+    id 'org.springframework.boot' version '1.5.9.RELEASE'
+    id 'war'
+}
 
 group = 'com.github.eendroroy'
 version = '0.0.1-SNAPSHOT'
