@@ -15,17 +15,8 @@ import java.security.Key
 
 @Configuration
 class TokenGenerator {
-
-    @Bean('generator')
-    Generator generator() {
-        new Generator()
+    static String token() {
+        Key key = MacProvider.generateKey()
+        Jwts.builder().setSubject('twitter.z.api').signWith(SignatureAlgorithm.HS512, key).compact()
     }
-
-    class Generator {
-        String token() {
-            Key key = MacProvider.generateKey()
-            Jwts.builder().setSubject('twitter.z.api').signWith(SignatureAlgorithm.HS512, key).compact()
-        }
-    }
-
 }
