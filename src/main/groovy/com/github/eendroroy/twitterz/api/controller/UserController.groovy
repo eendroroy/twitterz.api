@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.hateoas.MediaTypes
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -28,9 +29,8 @@ class UserController {
     @Autowired
     private UserService userService
 
-    @Qualifier('encoder')
     @Autowired
-    private PasswordEncoder.Encoder passwordEncoder
+    private PasswordEncoder passwordEncoder
 
     @RequestMapping(
             path = 'register', method = RequestMethod.POST,
@@ -46,7 +46,7 @@ class UserController {
             user.password = '****'
             [success:true, _embedded:[user:user],]
         } catch (DataIntegrityViolationException exception) {
-            response.status = 400
+            response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
             [success:false, details:exception.message,]
         }
     }
