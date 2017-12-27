@@ -3,7 +3,6 @@ package com.github.eendroroy.twitterz.api.security
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.impl.crypto.MacProvider
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 import java.security.Key
