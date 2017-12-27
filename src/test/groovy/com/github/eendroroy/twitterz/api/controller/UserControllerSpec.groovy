@@ -16,13 +16,19 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
+
 /**
  *
  * @author indrajit
  */
 
+@SuppressWarnings('UnusedPrivateField')
 @SpringBootTest(webEnvironment = NONE)
 class UserControllerSpec extends Specification {
+    private static final REGISTER_PATH_NAME = '/user/register'
+    private static final USERDATA_1 = [email:'dummy1@example.com', userName:'dummy1', password:'dummy1@password',]
+    private static final USERDATA_2 = [email:'dummy2@example.com', userName:'dummy2', password:'dummy2@password',]
+
     @InjectMocks
     private UserController userController
 
@@ -34,79 +40,78 @@ class UserControllerSpec extends Specification {
     @Spy
     private PasswordEncoder passwordEncoder
 
-    def setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this)
         mockMvc = standaloneSetup(userController).build()
 
     }
 
-    def '/register should give bad request for empty body'() {
+    void 'register should give bad request for empty body'() {
         expect:
-            mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON))
+            mockMvc.perform(post(REGISTER_PATH_NAME).contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
     }
 
-    def 'register new user should pass'() {
+    void 'register new user should pass'() {
         given:
             User user = new User()
-            user.email = 'dummy1@example.com'
-            user.userName = 'dummy1'
-            user.password = 'dummy@password'
+            user.email = USERDATA_1.email
+            user.userName = USERDATA_1.userName
+            user.password = USERDATA_1.password
 
         expect:
             mockMvc.perform(
-                    post("/user/register")
+                    post(REGISTER_PATH_NAME)
                             .content(TestUtil.convertObjectToJsonBytes(user))
                             .contentType(MediaType.APPLICATION_JSON_VALUE)
             )
                     .andExpect(status().isOk())
     }
 
-    def 'register existing username should fail'() {
+    void 'register existing username should fail'() {
 
         given:
             User user = new User()
-            user.email = 'dummy1@example.com'
-            user.userName = 'dummy1'
-            user.password = 'dummy@password'
-
+            user.email = USERDATA_1.email
+            user.userName = USERDATA_1.userName
+            user.password = USERDATA_1.password
 
             User user2 = new User()
-            user2.email = 'dummy1_new@example.com'
-            user2.userName = 'dummy1'
-            user2.password = 'dummy_new@password'
+            user2.email = USERDATA_2.email
+            user2.userName = USERDATA_2.userName
+            user2.password = USERDATA_2.password
 
         when:
             userService.saveUser(user)
 
         then:
             mockMvc.perform(
-                    post("/user/register")
+                    post(REGISTER_PATH_NAME)
                             .content(TestUtil.convertObjectToJsonBytes(user2))
                             .contentType(MediaType.APPLICATION_JSON_VALUE)
             )
                     .andExpect(status().isOk())
     }
 
-    def 'register existing email should fail'() {
+    void 'register existing email should fail'() {
 
         given:
             User user = new User()
-            user.email = 'dummy1@example.com'
-            user.userName = 'dummy1'
-            user.password = 'dummy@password'
+            user.email = USERDATA_1.email
+            user.userName = USERDATA_1.userName
+            user.password = USERDATA_1.password
 
             User user2 = new User()
-            user2.email = 'dummy1@example.com'
-            user2.userName = 'dummy1_new'
-            user2.password = 'dummy_new@password'
+            user2.email = USERDATA_2.email
+            user2.userName = USERDATA_2.userName
+            user2.password = USERDATA_2.password
 
         when:
             userService.saveUser(user)
 
         then:
             mockMvc.perform(
-                    post("/user/register")
+                    post(REGISTER_PATH_NAME)
                             .content(TestUtil.convertObjectToJsonBytes(user2))
                             .contentType(MediaType.APPLICATION_JSON_VALUE)
             )
