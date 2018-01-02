@@ -1,0 +1,29 @@
+---
+databaseChangeLog:
+  - changeSet:
+      id: createTweerTable
+      author: indrajit
+      changes:
+        - createTable:
+            tableName: tweets
+            columns:
+              - column:
+                  name: tweet_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: body
+                  type: text
+                  constraints:
+                    nullable: false
+                    unique: false
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    references: users(user_id)
+                    foreignKeyName: fk_tweets_users
+                    nullable: false

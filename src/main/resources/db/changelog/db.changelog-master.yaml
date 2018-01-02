@@ -3,3 +3,6 @@ databaseChangeLog:
   - include:
       file: db.changelog-users.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db.changelog-tweets.yaml
+      relativeToChangelogFile: true
