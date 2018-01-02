@@ -1,5 +1,6 @@
 package com.github.eendroroy.twitterz.api.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.validator.constraints.Length
 import org.springframework.format.annotation.DateTimeFormat
 
@@ -8,6 +9,7 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.OneToMany
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import javax.validation.constraints.Email
@@ -55,6 +57,10 @@ class User {
 
     @Column(name = 'active')
     int active
+
+    @JsonIgnore
+    @OneToMany(mappedBy = 'user')
+    Set<Tweet> tweets
 
     Date getDateOfBirth() {
         if (dateOfBirth != null) {
