@@ -42,11 +42,10 @@ class UserController {
             user.password = passwordEncoder.encode(user.password)
             user.active = 1
             userService.saveUser(user)
-            user.password = '****'
             [success:true, _embedded:[user:user],]
         } catch (DataIntegrityViolationException exception) {
             response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-            [success:false, details:exception.message,]
+            [success:false, details:exception.message, _embedded:[user:user],]
         }
     }
 }

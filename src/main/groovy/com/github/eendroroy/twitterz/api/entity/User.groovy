@@ -24,6 +24,7 @@ import javax.validation.constraints.Past
 @Entity
 @Table(name = 'users')
 class User {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator='user_id_seq')
     @SequenceGenerator(name='user_id_seq', sequenceName='users_user_id_seq', allocationSize=1)
@@ -35,11 +36,13 @@ class User {
     @NotEmpty(message = '*Please provide an email')
     String email
 
+    @JsonIgnore
     @Column(name = 'password_salt')
     @Length(min = 5, message = '*Your password must have at least 5 characters')
     @NotEmpty(message = '*Please provide your password')
     String password
 
+    @JsonIgnore
     @Column(name = 'access_token')
     String accessToken
 
