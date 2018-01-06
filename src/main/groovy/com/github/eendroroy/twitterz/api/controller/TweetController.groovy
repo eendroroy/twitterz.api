@@ -39,8 +39,9 @@ class TweetController {
             produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE,]
     )
     @ResponseBody
-    List<Tweet> getAllTweet() {
-        tweetService.allTweets()
+    Map<Object, Object> getAllTweet() {
+        List<Tweet> tweets = tweetService.allTweets()
+        [count:tweets.size(), _embedded:[tweets:tweets],]
     }
 
     @RequestMapping(
@@ -49,7 +50,7 @@ class TweetController {
             produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE,]
     )
     @ResponseBody
-    Map<Object, Object> register(
+    Map<Object, Object> create(
             @RequestBody Tweet tweet, HttpServletRequest request, HttpServletResponse response
     ) throws ParseException {
         try {
