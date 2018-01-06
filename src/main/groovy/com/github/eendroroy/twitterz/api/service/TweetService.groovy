@@ -13,4 +13,6 @@ interface TweetService {
     Tweet findTweetById(Long id)
 
     List<Tweet> findTweetsByUserId(Long userId)
+
+    Tweet saveTweet(Tweet tweet)
 }

@@ -33,4 +33,9 @@ class TweetServiceImpl implements TweetService {
     List<Tweet> findTweetsByUserId(Long userId) {
         tweetRepository.findTweetsByUserId(userId)
     }
+
+    @Override
+    Tweet saveTweet(Tweet tweet) {
+        tweetRepository.save(tweet)
+    }
 }
