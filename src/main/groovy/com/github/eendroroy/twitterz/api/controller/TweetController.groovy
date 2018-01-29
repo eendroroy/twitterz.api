@@ -50,7 +50,7 @@ class TweetController {
             produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE,]
     )
     @ResponseBody
-    Map<Object, Object> create(
+    Map<Object, Object> addTweet(
             @RequestBody Tweet tweet, HttpServletRequest request, HttpServletResponse response
     ) throws ParseException {
         try {
