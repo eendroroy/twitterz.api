@@ -1,6 +1,7 @@
 package com.github.eendroroy.twitterz.api.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import org.springframework.format.annotation.DateTimeFormat
 
@@ -36,13 +37,13 @@ class User {
     @NotEmpty(message = '*Please provide an email')
     String email
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = 'password_salt')
     @Length(min = 5, message = '*Your password must have at least 5 characters')
     @NotEmpty(message = '*Please provide your password')
     String password
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = 'access_token')
     String accessToken
 
