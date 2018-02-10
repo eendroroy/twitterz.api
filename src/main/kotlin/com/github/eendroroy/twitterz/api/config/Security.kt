@@ -12,13 +12,13 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class Security {
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        new PasswordEncoder()
+    @Bean("passwordEncoder")
+    fun passwordEncoder(): PasswordEncoder {
+        return PasswordEncoder()
     }
 
-    @Bean
-    TokenGenerator tokenGenerator() {
-        new TokenGenerator()
+    @Bean("tokenGenerator")
+    fun tokenGenerator(): TokenGenerator {
+        return TokenGenerator()
     }
 }
