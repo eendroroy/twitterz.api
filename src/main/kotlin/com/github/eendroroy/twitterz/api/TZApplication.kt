@@ -1,7 +1,7 @@
 package com.github.eendroroy.twitterz.api
 
-import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
 /**
  *
@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
  */
 
 @SpringBootApplication
-class TZApplication {
-    static void main(String[] args) {
-        SpringApplication.run TZApplication, args
-    }
+class TZApplication
+
+fun main(args: Array<String>) {
+    runApplication<TZApplication>(*args)
 }
