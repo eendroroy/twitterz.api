@@ -1,6 +1,8 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.0.M7'
+        kotlinVersion = '1.2.21'
+        liquibaseVersion = '1.2.4'
+        springBootVersion = '2.0.0.RC1'
     }
     repositories {
         mavenCentral()
@@ -10,7 +12,9 @@ buildscript {
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath "gradle.plugin.org.liquibase:liquibase-gradle-plugin:1.2.4"
+        classpath "gradle.plugin.org.liquibase:liquibase-gradle-plugin:${liquibaseVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}"
     }
 }
 
@@ -21,6 +25,8 @@ plugins {
     id 'idea'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.4.RELEASE'
+    id "org.jetbrains.kotlin.plugin.spring" version "1.2.21"
+    id "org.jetbrains.kotlin.jvm" version "1.2.21"
     id 'org.liquibase.gradle' version '1.2.4'
     id 'org.springframework.boot' version '1.5.9.RELEASE'
     id 'war'
@@ -41,6 +47,19 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
 configurations {
     providedRuntime
 }
@@ -59,6 +78,8 @@ dependencies {
     compile('commons-codec:commons-codec')
     compile('io.jsonwebtoken:jjwt:0.9.0')
     compile('org.codehaus.groovy:groovy-all:2.4.13')
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    compile("org.jetbrains.kotlin:kotlin-reflect")
     compile('org.liquibase:liquibase-core')
     compile('org.mindrot:jbcrypt:0.4')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
