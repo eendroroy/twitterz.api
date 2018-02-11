@@ -10,13 +10,11 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class PasswordEncoder{
-    companion object {
-        fun encode(password: String): String? {
-            return BCrypt.hashpw(password, BCrypt.gensalt())
-        }
+    fun encode(password: String): String? {
+        return BCrypt.hashpw(password, BCrypt.gensalt())
+    }
 
-        fun match(plainPassword: String, hashedPassword: String): Boolean {
-            return BCrypt.checkpw(plainPassword, hashedPassword)
-        }
+    fun match(plainPassword: String, hashedPassword: String): Boolean {
+        return BCrypt.checkpw(plainPassword, hashedPassword)
     }
 }
