@@ -19,25 +19,25 @@ import javax.validation.constraints.NotEmpty
  */
 
 @Entity
-@Table(name = 'tweets')
+@Table(name = "tweets")
 class Tweet {
     @JsonIgnore
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator='tweet_id_seq')
-    @SequenceGenerator(name='tweet_id_seq', sequenceName='tweets_tweet_id_seq', allocationSize=1)
-    @Column(name = 'tweet_id')
-    long id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="tweet_id_seq")
+    @SequenceGenerator(name="tweet_id_seq", sequenceName="tweets_tweet_id_seq", allocationSize=1)
+    @Column(name = "tweet_id")
+    var id: Long? = null
 
-    @Column(name = 'body', unique = false)
-    @NotEmpty(message = '*Please provide a tweet')
-    String body
+    @Column(name = "body", unique = false)
+    @NotEmpty(message = "*Please provide a tweet")
+    var body: String? = null
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name='user_id', nullable=false)
-    User user
+    @JoinColumn(name="user_id", nullable=false)
+    var user: User? = null
 
-    String getUserName() {
-        user.userName
+    fun getUserName(): String? {
+        return user!!.userName
     }
 }

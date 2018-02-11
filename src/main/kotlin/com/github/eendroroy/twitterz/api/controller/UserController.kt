@@ -23,29 +23,29 @@ import java.text.ParseException
  */
 
 @RestController
-@RequestMapping(path = '/user')
+@RequestMapping(path = ["/user"])
 class UserController {
     @Autowired
-    private UserService userService
+    private lateinit var userService: UserService
 
     @Autowired
-    private PasswordEncoder passwordEncoder
+    private lateinit var passwordEncoder: PasswordEncoder
 
     @RequestMapping(
-            path = 'register', method = RequestMethod.POST,
-            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE,],
-            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE,]
+            path = ["register"], method = [RequestMethod.POST],
+            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
+            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    Map<Object, Object> register(@RequestBody User user, HttpServletResponse response) throws ParseException {
-        try {
-            user.password = passwordEncoder.encode(user.password)
+    fun register(@RequestBody user: User, response: HttpServletResponse): Map<String, Any?> {
+        return try {
+            user.password = passwordEncoder.encode(user.password!!)
             user.active = 1
             userService.saveUser(user)
-            [success:true, _embedded:[user:user],]
-        } catch (DataIntegrityViolationException exception) {
+            mapOf("success" to true, "_embedded" to mapOf("user" to user))
+        } catch (exception: DataIntegrityViolationException) {
             response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-            [success:false, details:exception.message, _embedded:[user:user],]
+            mapOf("success" to false, "details" to exception.message, "_embedded" to mapOf("user" to user))
         }
     }
 }

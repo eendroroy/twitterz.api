@@ -19,9 +19,7 @@ buildscript {
 }
 
 plugins {
-    id 'codenarc'
     id 'com.adarshr.test-logger' version '1.1.2'
-    id 'groovy'
     id 'idea'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.4.RELEASE'
@@ -64,20 +62,11 @@ configurations {
     providedRuntime
 }
 
-codenarcMain {
-    configFile file('config/codenarc/codenarc-main.groovy')
-}
-
-codenarcTest {
-    configFile file('config/codenarc/codenarc-test.groovy')
-}
-
 test { finalizedBy jacocoTestReport }
 
 dependencies {
     compile('commons-codec:commons-codec')
     compile('io.jsonwebtoken:jjwt:0.9.0')
-    compile('org.codehaus.groovy:groovy-all:2.4.13')
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
     compile('org.liquibase:liquibase-core')

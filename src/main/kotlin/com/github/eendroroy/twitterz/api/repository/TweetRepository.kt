@@ -9,11 +9,9 @@ import org.springframework.stereotype.Repository
  * @author indrajit
  */
 
-@Repository('tweetRepository')
-interface TweetRepository extends JpaRepository<Tweet, Long> {
-    List<Tweet> findAll()
+@Repository("tweetRepository")
+interface TweetRepository : JpaRepository<Tweet, Long> {
+    fun findTweetById(tweetId: Long): Tweet
 
-    Tweet findTweetById(Long tweetId)
-
-    List<Tweet> findTweetsByUserId(Long userId)
+    fun findTweetsByUserId(userId: Long): List<Tweet>
 }
