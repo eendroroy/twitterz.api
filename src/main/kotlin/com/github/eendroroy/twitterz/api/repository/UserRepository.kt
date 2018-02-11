@@ -9,11 +9,9 @@ import org.springframework.stereotype.Repository
  * @author indrajit
  */
 
-@Repository('userRepository')
-interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findAll()
+@Repository("userRepository")
+interface UserRepository : JpaRepository<User, Long> {
+    fun findByEmail(email: String): User?
 
-    User findByEmail(String email)
-
-    User findByAccessToken(String accessToken)
+    fun findByAccessToken(accessToken: String): User?
 }
