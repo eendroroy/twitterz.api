@@ -8,11 +8,11 @@ import com.github.eendroroy.twitterz.api.entity.User
  */
 
 interface UserService {
-    List<User> allUsers()
+    fun allUsers(): List<User>?
 
-    User findUserByEmail(String email)
+    fun findUserByEmail(email: String): User?
 
-    User saveUser(User user)
+    fun saveUser(user: User): User?
 
-    User findUserByToken(String token)
+    fun findUserByToken(token: String): User?
 }
