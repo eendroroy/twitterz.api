@@ -20,9 +20,7 @@ buildscript {
 
 plugins {
     id 'com.adarshr.test-logger' version '1.1.2'
-    id 'groovy'
     id 'idea'
-    id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.4.RELEASE'
     id "org.jetbrains.kotlin.plugin.spring" version "1.2.21"
     id "org.jetbrains.kotlin.jvm" version "1.2.21"
@@ -63,8 +61,6 @@ configurations {
     providedRuntime
 }
 
-test { finalizedBy jacocoTestReport }
-
 dependencies {
     compile('commons-codec:commons-codec')
     compile('io.jsonwebtoken:jjwt:0.9.0')
@@ -81,9 +77,5 @@ dependencies {
 
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
-    testCompile('org.codehaus.groovy:groovy-all:2.4.13')
-    testCompile('org.spockframework:spock-core:1.1-groovy-2.4')
-    testCompile('org.spockframework:spock-core:1.1-groovy-2.4')
-    testCompile('org.spockframework:spock-spring:1.1-groovy-2.4')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
