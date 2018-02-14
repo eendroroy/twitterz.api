@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.hateoas.MediaTypes
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -42,6 +43,47 @@ class TweetController {
     fun getAllTweet(): Map<String, Any?> {
         val tweets: List<Tweet> = tweetService.allTweets()!!
         return mapOf("count" to tweets.size, "_embedded" to mapOf<Any, Any>("tweets" to tweets))
+    }
+
+    @RequestMapping(
+            path = ["{tweetId}"], method = [RequestMethod.GET],
+            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
+            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun getTweetById(
+            @PathVariable("tweetId") tweetId: Long,
+            request: HttpServletRequest,
+            response: HttpServletResponse
+    ): Map<String, Any?> {
+        val tweet: Tweet? = tweetService.findTweetById(tweetId) ?: return mapOf(
+                "Success" to false,
+                "details" to "Tweet not found by id {$tweetId}"
+        )
+        return mapOf("tweet" to tweet, "_embedded" to mapOf<Any, Any?>("user" to tweet!!.user))
+    }
+
+    @RequestMapping(
+            path = ["{tweetId}"], method = [RequestMethod.DELETE],
+            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
+            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun deleteTweetById(
+            @PathVariable("tweetId") tweetId: Long,
+            request: HttpServletRequest,
+            response: HttpServletResponse
+    ): Map<String, Any?> {
+        val user: User = userService.findUserByToken(request.getHeader("token"))!!
+        val tweet: Tweet = user.tweets!!.find { it.id == tweetId } ?: return mapOf(
+                "Success" to false,
+                "details" to "Tweet not found by id {$tweetId}"
+        )
+        tweetService.deleteTweet(tweet)
+        return mapOf(
+                "Success" to true,
+                "details" to "Tweet deleted with id {$tweetId}"
+        )
     }
 
     @RequestMapping(
