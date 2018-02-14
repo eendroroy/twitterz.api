@@ -1,0 +1,31 @@
+---
+databaseChangeLog:
+  - changeSet:
+      id: createUserFollowTable
+      author: indrajit
+      changes:
+        - createTable:
+            tableName: user_follow
+            columns:
+              - column:
+                  name: user_follow_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: follow_id
+                  type: int
+                  constraints:
+                    references: users(user_id)
+                    foreignKeyName: fk_follow_users
+                    nullable: false
+              - column:
+                  name: following_id
+                  type: int
+                  constraints:
+                    references: users(user_id)
+                    foreignKeyName: fk_following_users
+                    nullable: false
+

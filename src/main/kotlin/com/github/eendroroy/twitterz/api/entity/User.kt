@@ -5,19 +5,27 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import org.springframework.format.annotation.DateTimeFormat
 import java.util.Date
+import java.util.HashSet
 import java.util.TreeSet
+import javax.persistence.CascadeType
 
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Past
+import javax.persistence.JoinColumn
+import javax.persistence.JoinTable
+
+
 
 /**
  *
@@ -65,8 +73,17 @@ class User {
     var active: Int? = null
 
     @JsonIgnore
+    @ManyToMany(mappedBy = "following", cascade = [CascadeType.ALL])
+    var followers: Set<User?> = HashSet()
+
+    @JsonIgnore
+    @ManyToMany(cascade = [CascadeType.ALL])
+    @JoinTable(name = "user_follow", joinColumns = [JoinColumn(name = "following_id")], inverseJoinColumns = [JoinColumn(name = "follow_id")])
+    var following: Set<User?> = HashSet()
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
-    var tweets: Set<Tweet>? = TreeSet()
+    var tweets: Set<Tweet>? = HashSet()
 
     fun getDateOfBirth(): Date? {
         if (dateOfBirth != null) {
