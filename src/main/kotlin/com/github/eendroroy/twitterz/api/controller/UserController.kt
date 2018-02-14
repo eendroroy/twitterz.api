@@ -81,7 +81,7 @@ class UserController {
                             "_embedded" to mapOf<Any, Any?>("follow" to followUser)
                     )
                 }
-                user.following.contains(followUser) -> {
+                user.followings.contains(followUser) -> {
                     response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
                     return mapOf(
                             "Success" to false,
@@ -90,9 +90,9 @@ class UserController {
                     )
                 }
             }
-            user.following = user.following.plus(followUser)
+            user.followings = user.followings.plus(followUser)
             userService.saveUser(user)
-            mapOf("Success" to true, "_embedded" to mapOf<Any, Any?>("follow" to user.following))
+            mapOf("Success" to true, "_embedded" to mapOf<Any, Any?>("follow" to user.followings))
         } catch (exception: DataIntegrityViolationException) {
             response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
             mapOf(
@@ -100,6 +100,38 @@ class UserController {
                     "details" to exception.message,
                     "_embedded" to mapOf<Any, Any?>("follow" to userId)
             )
+        }
+    }
+
+    @RequestMapping(
+            path = ["followings"], method = [RequestMethod.GET],
+            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
+            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun followings(request: HttpServletRequest, response: HttpServletResponse): Map<String, Any?> {
+        return try {
+            val user: User = userService.findUserByToken(request.getHeader("token"))!!
+            mapOf("Success" to true, "_embedded" to mapOf<Any, Any?>("followings" to user.followings))
+        } catch (exception: DataIntegrityViolationException) {
+            response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
+            mapOf("success" to false, "details" to exception.message)
+        }
+    }
+
+    @RequestMapping(
+            path = ["followers"], method = [RequestMethod.GET],
+            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
+            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun followers(request: HttpServletRequest, response: HttpServletResponse): Map<String, Any?> {
+        return try {
+            val user: User = userService.findUserByToken(request.getHeader("token"))!!
+            mapOf("Success" to true, "_embedded" to mapOf<Any, Any?>("followers" to user.followers))
+        } catch (exception: DataIntegrityViolationException) {
+            response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
+            mapOf("success" to false, "details" to exception.message)
         }
     }
 }

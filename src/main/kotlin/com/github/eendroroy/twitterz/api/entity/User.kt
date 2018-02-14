@@ -73,13 +73,17 @@ class User {
     var active: Int? = null
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "following", cascade = [CascadeType.ALL])
+    @ManyToMany(mappedBy = "followings", cascade = [CascadeType.ALL])
     var followers: Set<User?> = HashSet()
 
     @JsonIgnore
     @ManyToMany(cascade = [CascadeType.ALL])
-    @JoinTable(name = "user_follow", joinColumns = [JoinColumn(name = "following_id")], inverseJoinColumns = [JoinColumn(name = "follow_id")])
-    var following: Set<User?> = HashSet()
+    @JoinTable(
+            name = "user_follow",
+            joinColumns = [JoinColumn(name = "following_id")],
+            inverseJoinColumns = [JoinColumn(name = "follow_id")]
+    )
+    var followings: Set<User?> = HashSet()
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
