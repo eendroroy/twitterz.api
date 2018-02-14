@@ -53,7 +53,7 @@ class User {
     @NotEmpty(message = "*Please provide your password")
     var password: String? = null
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonIgnore
     @Column(name = "access_token")
     var accessToken: String? = null
 
