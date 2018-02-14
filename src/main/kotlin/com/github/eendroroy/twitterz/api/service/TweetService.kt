@@ -15,4 +15,6 @@ interface TweetService {
     fun findTweetsByUserId(userId: Long): List<Tweet>?
 
     fun saveTweet(tweet: Tweet): Tweet?
+
+    fun deleteTweet(tweet: Tweet)
 }

@@ -38,4 +38,8 @@ class TweetServiceImpl : TweetService {
     override fun saveTweet(tweet: Tweet): Tweet? {
         return tweetRepository.save(tweet)
     }
+
+    override fun deleteTweet(tweet: Tweet) {
+        tweetRepository.delete(tweet)
+    }
 }
