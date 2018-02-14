@@ -36,8 +36,4 @@ class Tweet {
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     var user: User? = null
-
-    fun getUserName(): String? {
-        return user!!.userName
-    }
 }
