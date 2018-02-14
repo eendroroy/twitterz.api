@@ -35,7 +35,6 @@ import javax.persistence.JoinTable
 @Entity
 @Table(name = "users")
 class User {
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="user_id_seq")
     @SequenceGenerator(name="user_id_seq", sequenceName="users_user_id_seq", allocationSize=1)
@@ -87,7 +86,7 @@ class User {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
-    var tweets: Set<Tweet>? = HashSet()
+    var tweets: Set<Tweet?> = HashSet()
 
     fun getDateOfBirth(): Date? {
         if (dateOfBirth != null) {

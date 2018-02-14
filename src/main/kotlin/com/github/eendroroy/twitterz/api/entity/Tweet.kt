@@ -21,7 +21,6 @@ import javax.validation.constraints.NotEmpty
 @Entity
 @Table(name = "tweets")
 class Tweet {
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="tweet_id_seq")
     @SequenceGenerator(name="tweet_id_seq", sequenceName="tweets_tweet_id_seq", allocationSize=1)
