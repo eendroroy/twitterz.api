@@ -1,6 +1,7 @@
 package com.github.eendroroy.twitterz.api.service
 
 import com.github.eendroroy.twitterz.api.entity.User
+import java.util.*
 
 /**
  *
@@ -9,6 +10,8 @@ import com.github.eendroroy.twitterz.api.entity.User
 
 interface UserService {
     fun allUsers(): List<User>?
+
+    fun findUserById(userId: Long): User?
 
     fun findUserByEmail(email: String): User?
 
