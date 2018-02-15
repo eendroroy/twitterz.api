@@ -2,13 +2,18 @@ package com.github.eendroroy.twitterz.api.controller
 
 import com.github.eendroroy.twitterz.api.entity.Tweet
 import com.github.eendroroy.twitterz.api.entity.User
+import com.github.eendroroy.twitterz.api.resource.TweetResource
 import com.github.eendroroy.twitterz.api.service.TweetService
 import com.github.eendroroy.twitterz.api.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.hateoas.MediaTypes
+import org.springframework.hateoas.Resource
+import org.springframework.hateoas.Resources
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -40,9 +45,10 @@ class TweetController {
 
     @GetMapping("")
     @ResponseBody
-    fun getAllTweet(): Map<String, Any?> {
+    fun getAllTweet(): ResponseEntity<Resources<TweetResource>> {
         val tweets: List<Tweet> = tweetService.allTweets()!!
-        return mapOf("count" to tweets.size, "_embedded" to mapOf<Any, Any>("tweets" to tweets))
+        val resources: Resources<TweetResource> = Resources(tweets.map { TweetResource(it) })
+        return ok(resources)
     }
 
     @GetMapping("{tweetId}")
@@ -51,12 +57,10 @@ class TweetController {
             @PathVariable("tweetId") tweetId: Long,
             request: HttpServletRequest,
             response: HttpServletResponse
-    ): Map<String, Any?> {
-        val tweet: Tweet? = tweetService.findTweetById(tweetId) ?: return mapOf(
-                "Success" to false,
-                "details" to "Tweet not found by id {$tweetId}"
-        )
-        return mapOf("tweet" to tweet, "_embedded" to mapOf<Any, Any?>("user" to tweet!!.user))
+    ): ResponseEntity<Resource<TweetResource>> {
+        val tweet: Tweet? = tweetService.findTweetById(tweetId) ?: throw Exception()
+        val resources: Resource<TweetResource> = Resource(TweetResource(tweet!!))
+        return ok(resources)
     }
 
     @DeleteMapping("{tweetId}")
