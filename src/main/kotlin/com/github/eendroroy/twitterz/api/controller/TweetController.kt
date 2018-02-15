@@ -9,16 +9,16 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.hateoas.MediaTypes
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
-
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import java.text.ParseException
 
 /**
  *
@@ -26,7 +26,11 @@ import java.text.ParseException
  */
 
 @RestController
-@RequestMapping(path = ["/tweet"])
+@RequestMapping(
+        path = ["/tweet"],
+        consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
+)
 class TweetController {
     @Autowired
     private lateinit var tweetService: TweetService
@@ -34,22 +38,14 @@ class TweetController {
     @Autowired
     private lateinit var userService: UserService
 
-    @RequestMapping(
-            path = [""], method = [RequestMethod.GET],
-            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
-            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
-    )
+    @GetMapping("")
     @ResponseBody
     fun getAllTweet(): Map<String, Any?> {
         val tweets: List<Tweet> = tweetService.allTweets()!!
         return mapOf("count" to tweets.size, "_embedded" to mapOf<Any, Any>("tweets" to tweets))
     }
 
-    @RequestMapping(
-            path = ["{tweetId}"], method = [RequestMethod.GET],
-            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
-            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
-    )
+    @GetMapping("{tweetId}")
     @ResponseBody
     fun getTweetById(
             @PathVariable("tweetId") tweetId: Long,
@@ -63,11 +59,7 @@ class TweetController {
         return mapOf("tweet" to tweet, "_embedded" to mapOf<Any, Any?>("user" to tweet!!.user))
     }
 
-    @RequestMapping(
-            path = ["{tweetId}"], method = [RequestMethod.DELETE],
-            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
-            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
-    )
+    @DeleteMapping("{tweetId}")
     @ResponseBody
     fun deleteTweetById(
             @PathVariable("tweetId") tweetId: Long,
@@ -86,11 +78,7 @@ class TweetController {
         )
     }
 
-    @RequestMapping(
-            path = [""], method = [RequestMethod.POST],
-            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
-            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
-    )
+    @PostMapping("")
     @ResponseBody
     fun addTweet(
             @RequestBody tweet: Tweet?, request: HttpServletRequest, response: HttpServletResponse
