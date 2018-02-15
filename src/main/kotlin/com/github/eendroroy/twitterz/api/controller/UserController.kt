@@ -1,19 +1,22 @@
 package com.github.eendroroy.twitterz.api.controller
 
 import com.github.eendroroy.twitterz.api.entity.User
+import com.github.eendroroy.twitterz.api.resource.UserResource
 import com.github.eendroroy.twitterz.api.security.PasswordEncoder
 import com.github.eendroroy.twitterz.api.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.hateoas.MediaTypes
+import org.springframework.hateoas.Resources
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.HttpServletRequest
@@ -103,25 +106,27 @@ class UserController {
 
     @GetMapping("followings")
     @ResponseBody
-    fun followings(request: HttpServletRequest, response: HttpServletResponse): Map<String, Any?> {
+    fun followings(request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<Resources<UserResource>> {
         return try {
             val user: User = userService.findUserByToken(request.getHeader("token"))!!
-            mapOf("Success" to true, "_embedded" to mapOf<Any, Any?>("followings" to user.followings))
+            val resources: Resources<UserResource> = Resources(user.followings.map { UserResource(it!!) })
+            ok(resources)
         } catch (exception: DataIntegrityViolationException) {
             response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-            mapOf("success" to false, "details" to exception.message)
+            throw Exception()
         }
     }
 
     @GetMapping("followers")
     @ResponseBody
-    fun followers(request: HttpServletRequest, response: HttpServletResponse): Map<String, Any?> {
+    fun followers(request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<Resources<UserResource>> {
         return try {
             val user: User = userService.findUserByToken(request.getHeader("token"))!!
-            mapOf("Success" to true, "_embedded" to mapOf<Any, Any?>("followers" to user.followers))
+            val resources: Resources<UserResource> = Resources(user.followers.map { UserResource(it!!) })
+            ok(resources)
         } catch (exception: DataIntegrityViolationException) {
             response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-            mapOf("success" to false, "details" to exception.message)
+            throw Exception()
         }
     }
 }
