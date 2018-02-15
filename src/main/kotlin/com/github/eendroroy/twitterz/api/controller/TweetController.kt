@@ -75,7 +75,7 @@ class TweetController {
             response: HttpServletResponse
     ): Map<String, Any?> {
         val user: User = userService.findUserByToken(request.getHeader("token"))!!
-        val tweet: Tweet = user.tweets!!.find { it.id == tweetId } ?: return mapOf(
+        val tweet: Tweet = user.tweets.find { it!!.id == tweetId } ?: return mapOf(
                 "Success" to false,
                 "details" to "Tweet not found by id {$tweetId}"
         )
