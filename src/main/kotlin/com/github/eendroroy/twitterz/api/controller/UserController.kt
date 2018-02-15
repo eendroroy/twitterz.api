@@ -8,7 +8,9 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.hateoas.MediaTypes
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -23,7 +25,11 @@ import javax.servlet.http.HttpServletResponse
  */
 
 @RestController
-@RequestMapping(path = ["/user"])
+@RequestMapping(
+        path = ["/user"],
+        consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
+)
 class UserController {
     @Autowired
     private lateinit var userService: UserService
@@ -31,11 +37,7 @@ class UserController {
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
 
-    @RequestMapping(
-            path = ["register"], method = [RequestMethod.POST],
-            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
-            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
-    )
+    @PostMapping("register")
     @ResponseBody
     fun register(@RequestBody user: User, response: HttpServletResponse): Map<String, Any?> {
         return try {
@@ -49,11 +51,7 @@ class UserController {
         }
     }
 
-    @RequestMapping(
-            path = ["follow/{userId}"], method = [RequestMethod.POST],
-            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
-            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
-    )
+    @PostMapping("follow/{userId}")
     @ResponseBody
     fun follow(
             @PathVariable("userId") userId: Long,
@@ -103,11 +101,7 @@ class UserController {
         }
     }
 
-    @RequestMapping(
-            path = ["followings"], method = [RequestMethod.GET],
-            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
-            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
-    )
+    @GetMapping("followings")
     @ResponseBody
     fun followings(request: HttpServletRequest, response: HttpServletResponse): Map<String, Any?> {
         return try {
@@ -119,11 +113,7 @@ class UserController {
         }
     }
 
-    @RequestMapping(
-            path = ["followers"], method = [RequestMethod.GET],
-            consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
-            produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
-    )
+    @GetMapping("followers")
     @ResponseBody
     fun followers(request: HttpServletRequest, response: HttpServletResponse): Map<String, Any?> {
         return try {
