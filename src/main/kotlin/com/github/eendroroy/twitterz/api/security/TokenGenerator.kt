@@ -5,8 +5,6 @@ import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.impl.crypto.MacProvider
 import org.springframework.context.annotation.Configuration
 
-import java.security.Key
-
 /**
  *
  * @author indrajit

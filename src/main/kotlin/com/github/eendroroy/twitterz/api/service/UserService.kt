@@ -1,7 +1,6 @@
 package com.github.eendroroy.twitterz.api.service
 
 import com.github.eendroroy.twitterz.api.entity.User
-import java.util.*
 
 /**
  *
