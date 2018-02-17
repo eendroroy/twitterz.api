@@ -7,6 +7,7 @@ import com.github.eendroroy.twitterz.api.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.hateoas.MediaTypes
+import org.springframework.hateoas.Resource
 import org.springframework.hateoas.Resources
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -42,15 +43,16 @@ class UserController {
 
     @PostMapping("register")
     @ResponseBody
-    fun register(@RequestBody user: User, response: HttpServletResponse): Map<String, Any?> {
+    fun register(@RequestBody user: User, response: HttpServletResponse): ResponseEntity<Resource<UserResource>> {
         return try {
             user.password = passwordEncoder.encode(user.password!!)
             user.active = 1
             userService.saveUser(user)
-            mapOf("success" to true, "_embedded" to mapOf("user" to user))
+            val resource: Resource<UserResource> = Resource(UserResource(user))
+            ok(resource)
         } catch (exception: DataIntegrityViolationException) {
             response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-            mapOf("success" to false, "details" to exception.message, "_embedded" to mapOf("user" to user))
+            throw Exception()
         }
     }
 
@@ -60,7 +62,7 @@ class UserController {
             @PathVariable("userId") userId: Long,
             request: HttpServletRequest,
             response: HttpServletResponse
-    ): Map<String, Any?> {
+    ): ResponseEntity<Resources<UserResource>> {
         return try {
             val user: User = userService.findUserByToken(request.getHeader("token"))!!
             val followUser: User? = userService.findUserById(userId)
@@ -68,39 +70,24 @@ class UserController {
             when {
                 followUser == null -> {
                     response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-                    return mapOf(
-                            "Success" to false,
-                            "details" to "can not find user with id {$userId}.",
-                            "_embedded" to mapOf<Any, Any?>("follow" to userId)
-                    )
+                    throw Exception("can not find user with id {$userId}.")
                 }
                 user.id == followUser.id -> {
                     response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-                    return mapOf(
-                            "Success" to false,
-                            "details" to "can not follow self.",
-                            "_embedded" to mapOf<Any, Any?>("follow" to followUser)
-                    )
+                    throw Exception("can not follow self.")
                 }
                 user.followings.contains(followUser) -> {
                     response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-                    return mapOf(
-                            "Success" to false,
-                            "details" to "user {$userId} is already being followed.",
-                            "_embedded" to mapOf<Any, Any?>("follow" to followUser)
-                    )
+                    throw Exception("user {$userId} is already being followed.")
                 }
             }
             user.followings = user.followings.plus(followUser)
             userService.saveUser(user)
-            mapOf("Success" to true, "_embedded" to mapOf<Any, Any?>("follow" to user.followings))
+            val resources: Resources<UserResource> = Resources(user.followings.map { UserResource(it!!) })
+            ok(resources)
         } catch (exception: DataIntegrityViolationException) {
             response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-            mapOf(
-                    "success" to false,
-                    "details" to exception.message,
-                    "_embedded" to mapOf<Any, Any?>("follow" to userId)
-            )
+            throw Exception()
         }
     }
 
