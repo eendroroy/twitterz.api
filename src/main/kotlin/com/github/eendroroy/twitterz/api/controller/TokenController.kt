@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse
  */
 
 @RestController
-@RequestMapping(path = ["/token"])
+@RequestMapping(path = ["token"])
 class TokenController {
     @Autowired
     private lateinit var userService: UserService
