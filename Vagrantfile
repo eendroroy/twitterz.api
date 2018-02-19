@@ -33,7 +33,7 @@ Vagrant.configure("2") do |config|
               xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd"
               version="1.0">
   <role rolename="admin-gui"/>
-  <user username="admin" password="admin" roles="manager-gui,admin-gui"/>
+  <user username="admin" password="admin" roles="manager-gui,admin-gui,manager-script"/>
 </tomcat-users>' > /opt/tomcat/conf/tomcat-users.xml
 
     echo '<?xml version="1.0" encoding="UTF-8"?>
