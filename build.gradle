@@ -15,11 +15,13 @@ buildscript {
         classpath "gradle.plugin.org.liquibase:liquibase-gradle-plugin:${liquibaseVersion}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
         classpath "org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}"
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.3'
     }
 }
 
 plugins {
     id 'com.adarshr.test-logger' version '1.1.2'
+    id 'com.bmuschko.cargo' version '2.3'
     id 'idea'
     id 'io.spring.dependency-management' version '1.0.4.RELEASE'
     id "org.jetbrains.kotlin.plugin.spring" version "1.2.21"
@@ -52,6 +54,24 @@ compileTestKotlin {
         jvmTarget = "1.8"
     }
 }
+
+cargo {
+    containerId = 'tomcat8x'
+    port = 8080
+
+    deployable {
+        context = 'twitterz'
+    }
+
+    remote {
+        hostname = '192.168.33.10'
+        username = 'admin'
+        password = 'admin'
+    }
+}
+
+tasks.cargoDeployRemote.dependsOn(build)
+tasks.cargoRedeployRemote.dependsOn(build)
 
 configurations {
     providedRuntime
