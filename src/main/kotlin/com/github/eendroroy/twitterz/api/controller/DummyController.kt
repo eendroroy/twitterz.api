@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse
 class DummyController {
     @GetMapping("")
     @ResponseBody
-    fun register(@RequestBody body: Map<String, String>, response: HttpServletResponse): Map<String, Any> {
+    fun register(response: HttpServletResponse): Map<String, Any> {
         return mutableMapOf("success" to true)
     }
 }
