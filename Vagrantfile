@@ -87,5 +87,22 @@ WantedBy=multi-user.target" > /etc/systemd/system/tomcat.service
     ufw allow 8080
     systemctl enable tomcat
     systemctl restart tomcat
+
+    apt-get install -y postgresql
+
+    echo 'local   all             postgres                                trust
+local   all             all                                     md5
+host    all             all             127.0.0.1/32            md5
+host    all             all             ::1/128                 md5' > /etc/postgresql/9.5/main/pg_hba.conf
+
+    service postgresql restart
+    sudo -u postgres psql -U postgres -d postgres -c "alter user postgres with password 'postgres';"
+    sudo -u postgres psql -U postgres -d postgres -c "create database twitterzapi;"
+    service postgresql restart
+
+    echo 'local   all             postgres                                md5
+local   all             all                                     md5
+host    all             all             127.0.0.1/32            md5
+host    all             all             ::1/128                 md5' > /etc/postgresql/9.5/main/pg_hba.conf
   SHELL
 end
