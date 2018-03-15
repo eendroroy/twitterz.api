@@ -4,7 +4,7 @@ class APIPaths {
     companion object {
         const val USER_USER_ID = "userId"
 
-        const val USER_PATH = "user"
+        const val USERS_PATH = "users"
         const val USER_REGISTRATION_PATH = "register"
         const val USER_FOLLOWINGS_PATH = "followings"
         const val USER_FOLLOWERS_PATH = "followers"

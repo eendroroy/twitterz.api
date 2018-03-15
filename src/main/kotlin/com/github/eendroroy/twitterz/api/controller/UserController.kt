@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping(
-        path = [APIPaths.USER_PATH],
+        path = [APIPaths.USERS_PATH],
         consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
 )
