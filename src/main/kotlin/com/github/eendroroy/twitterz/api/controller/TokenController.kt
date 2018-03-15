@@ -43,7 +43,7 @@ class TokenController {
             return mutableMapOf("success" to true, "details" to "user not found")
         }
         if (passwordEncoder.match(password, user.password!!)) {
-            var token: String = tokenGenerator.token()!!
+            val token: String = tokenGenerator.token()!!
             user.accessToken = token
             userService.saveUser(user)
             return mutableMapOf("success" to true, "token" to token)
