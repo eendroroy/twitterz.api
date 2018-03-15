@@ -4,6 +4,7 @@ import com.github.eendroroy.twitterz.api.entity.User
 import com.github.eendroroy.twitterz.api.resource.UserResource
 import com.github.eendroroy.twitterz.api.security.PasswordEncoder
 import com.github.eendroroy.twitterz.api.service.UserService
+import com.github.eendroroy.twitterz.api.utils.APIPaths
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.hateoas.MediaTypes
@@ -30,7 +31,7 @@ import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping(
-        path = ["user"],
+        path = [APIPaths.USER_PATH],
         consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
 )
@@ -41,7 +42,7 @@ class UserController {
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
 
-    @PostMapping("register")
+    @PostMapping(APIPaths.USER_REGISTRATION_PATH)
     @ResponseBody
     fun register(@RequestBody user: User, response: HttpServletResponse): ResponseEntity<Resource<UserResource>> {
         return try {
@@ -56,10 +57,10 @@ class UserController {
         }
     }
 
-    @PostMapping("follow/{userId}")
+    @PostMapping(APIPaths.USER_FOLLOW_PATH)
     @ResponseBody
     fun follow(
-            @PathVariable("userId") userId: Long,
+            @PathVariable(APIPaths.USER_USER_ID) userId: Long,
             request: HttpServletRequest,
             response: HttpServletResponse
     ): ResponseEntity<Resources<UserResource>> {
@@ -91,7 +92,7 @@ class UserController {
         }
     }
 
-    @GetMapping("followings")
+    @GetMapping(APIPaths.USER_FOLLOWINGS_PATH)
     @ResponseBody
     fun followings(request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<Resources<UserResource>> {
         return try {
@@ -104,7 +105,7 @@ class UserController {
         }
     }
 
-    @GetMapping("followers")
+    @GetMapping(APIPaths.USER_FOLLOWERS_PATH)
     @ResponseBody
     fun followers(request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<Resources<UserResource>> {
         return try {
