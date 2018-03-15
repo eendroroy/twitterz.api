@@ -5,6 +5,7 @@ import com.github.eendroroy.twitterz.api.entity.User
 import com.github.eendroroy.twitterz.api.resource.TweetResource
 import com.github.eendroroy.twitterz.api.service.TweetService
 import com.github.eendroroy.twitterz.api.service.UserService
+import com.github.eendroroy.twitterz.api.utils.APIPaths
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.hateoas.MediaTypes
@@ -32,7 +33,7 @@ import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping(
-        path = ["tweet"],
+        path = [APIPaths.TWEET_COMMON_PATH],
         consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
 )
@@ -43,7 +44,7 @@ class TweetController {
     @Autowired
     private lateinit var userService: UserService
 
-    @GetMapping("")
+    @GetMapping(APIPaths.TWEETS_PATH)
     @ResponseBody
     fun getAllTweet(): ResponseEntity<Resources<TweetResource>> {
         val tweets: List<Tweet> = tweetService.allTweets()!!
@@ -51,10 +52,10 @@ class TweetController {
         return ok(resources)
     }
 
-    @GetMapping("{tweetId}")
+    @GetMapping(APIPaths.TWEET_PATH)
     @ResponseBody
     fun getTweetById(
-            @PathVariable("tweetId") tweetId: Long,
+            @PathVariable(APIPaths.TWEET_ID) tweetId: Long,
             request: HttpServletRequest,
             response: HttpServletResponse
     ): ResponseEntity<Resource<TweetResource>> {
@@ -63,10 +64,10 @@ class TweetController {
         return ok(resources)
     }
 
-    @DeleteMapping("{tweetId}")
+    @DeleteMapping(APIPaths.TWEET_PATH)
     @ResponseBody
     fun deleteTweetById(
-            @PathVariable("tweetId") tweetId: Long,
+            @PathVariable(APIPaths.TWEET_ID) tweetId: Long,
             request: HttpServletRequest,
             response: HttpServletResponse
     ): Map<String, Any?> {
@@ -82,7 +83,7 @@ class TweetController {
         )
     }
 
-    @PostMapping("")
+    @PostMapping(APIPaths.TWEET_CREATE_PATH)
     @ResponseBody
     fun addTweet(
             @RequestBody tweet: Tweet?, request: HttpServletRequest, response: HttpServletResponse
