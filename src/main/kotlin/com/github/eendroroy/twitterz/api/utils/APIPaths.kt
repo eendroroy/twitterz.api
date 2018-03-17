@@ -16,5 +16,8 @@ class APIPaths {
         const val TWEETS_PATH = ""
         const val TWEET_CREATE_PATH = ""
         const val TWEET_PATH = "{$TWEET_ID}"
+
+        const val TOKEN_PATH = "token"
+        const val TOKEN_CREATE_PATH = "create"
     }
 }
