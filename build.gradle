@@ -24,6 +24,7 @@ plugins {
     id 'com.bmuschko.cargo' version '2.3'
     id 'idea'
     id 'io.spring.dependency-management' version '1.0.4.RELEASE'
+    id 'jacoco'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.2.31'
     id 'org.jetbrains.kotlin.jvm' version '1.2.31'
     id 'org.liquibase.gradle' version '1.2.4'
@@ -72,6 +73,8 @@ cargo {
 
 tasks.cargoDeployRemote.dependsOn(build)
 tasks.cargoRedeployRemote.dependsOn(build)
+
+tasks.test.finalizedBy(tasks.jacocoTestReport)
 
 configurations {
     providedRuntime
