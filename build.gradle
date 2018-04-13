@@ -71,6 +71,16 @@ cargo {
     }
 }
 
+task deleteOutDirectory {
+    doLast {
+        delete "$projectDir/out"
+    }
+}
+
+tasks.clean.doFirst {
+    delete "$projectDir/out"
+}
+
 tasks.cargoDeployRemote.dependsOn(build)
 tasks.cargoRedeployRemote.dependsOn(build)
 
