@@ -18,4 +18,8 @@ class UserResource() : ResourceSupport() {
         this.user = user
     }
 
+    constructor(userResource: UserResource?) : this() {
+        this.user = userResource!!.user
+    }
+
 }

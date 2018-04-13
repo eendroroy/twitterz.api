@@ -18,4 +18,8 @@ class TweetResource() : ResourceSupport() {
         this.tweet = tweet
     }
 
+    constructor(tweetResource: TweetResource?) : this() {
+        this.tweet = tweetResource!!.tweet
+    }
+
 }
