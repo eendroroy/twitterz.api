@@ -17,7 +17,11 @@ import javax.servlet.http.HttpServletResponse
  */
 
 @RestController
-@RequestMapping(path = ["token"])
+@RequestMapping(
+        path = ["token"],
+        consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
+)
 class TokenController {
     @Autowired
     private lateinit var userService: UserService
@@ -28,11 +32,7 @@ class TokenController {
     @Autowired
     private lateinit var tokenGenerator: TokenGenerator
 
-    @RequestMapping(
-        path = ["create"], method = [RequestMethod.POST],
-        consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
-    )
+    @PostMapping("create")
     @ResponseBody
     fun register(@RequestBody body: Map<String, String>,response: HttpServletResponse): Map<String, Any> {
         val email: String = body["email"]!!
