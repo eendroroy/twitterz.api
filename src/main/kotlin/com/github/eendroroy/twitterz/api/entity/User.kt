@@ -90,7 +90,9 @@ class User {
         return null
     }
 
-    fun setDateOfBirth(dateOfBirth: Date) {
-        this.dateOfBirth = Date(dateOfBirth.time)
+    fun setDateOfBirth(dateOfBirth: Date?) {
+        if (dateOfBirth != null) {
+            this.dateOfBirth = Date(dateOfBirth.time)
+        }
     }
 }
