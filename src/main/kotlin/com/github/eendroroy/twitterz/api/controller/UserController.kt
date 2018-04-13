@@ -44,8 +44,9 @@ class UserController {
 
     @PostMapping(APIPaths.USER_REGISTRATION_PATH)
     @ResponseBody
-    fun register(@RequestBody user: User, response: HttpServletResponse): ResponseEntity<Resource<UserResource>> {
+    fun register(@RequestBody userResource: UserResource, response: HttpServletResponse): ResponseEntity<Resource<UserResource>> {
         return try {
+            val user = userResource.user!!
             user.password = passwordEncoder.encode(user.password!!)
             user.active = 1
             userService.saveUser(user)
