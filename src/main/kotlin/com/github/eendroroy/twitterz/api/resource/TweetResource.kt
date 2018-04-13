@@ -10,11 +10,11 @@ import org.springframework.hateoas.core.Relation
  */
 
 @Relation(collectionRelation = "tweets")
-class TweetResource(tweet: Tweet) : ResourceSupport() {
+class TweetResource() : ResourceSupport() {
 
     var tweet: Tweet? = null
 
-    init {
+    constructor(tweet: Tweet?) : this() {
         this.tweet = tweet
     }
 

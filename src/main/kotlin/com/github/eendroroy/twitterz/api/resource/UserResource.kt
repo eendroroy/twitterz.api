@@ -10,11 +10,11 @@ import org.springframework.hateoas.core.Relation
  */
 
 @Relation(collectionRelation = "users")
-class UserResource(user: User) : ResourceSupport() {
+class UserResource() : ResourceSupport() {
 
     var user: User? = null
 
-    init {
+    constructor(user: User?) : this() {
         this.user = user
     }
 
