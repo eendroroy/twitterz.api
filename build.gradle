@@ -6,9 +6,9 @@ buildscript {
     }
     repositories {
         mavenCentral()
-        maven { url "https://repo.spring.io/snapshot" }
-        maven { url "https://repo.spring.io/milestone" }
-        maven { url "https://plugins.gradle.org/m2" }
+        maven { url = 'https://repo.spring.io/snapshot' }
+        maven { url = 'https://repo.spring.io/milestone' }
+        maven { url = 'https://plugins.gradle.org/m2' }
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
@@ -24,8 +24,8 @@ plugins {
     id 'com.bmuschko.cargo' version '2.3'
     id 'idea'
     id 'io.spring.dependency-management' version '1.0.4.RELEASE'
-    id "org.jetbrains.kotlin.plugin.spring" version "1.2.31"
-    id "org.jetbrains.kotlin.jvm" version "1.2.30"
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.2.31'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.31'
     id 'org.liquibase.gradle' version '1.2.4'
     id 'org.springframework.boot' version '2.0.0.RELEASE'
     id 'war'
@@ -38,8 +38,8 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
+    maven { url = 'https://repo.spring.io/snapshot' }
+    maven { url = 'https://repo.spring.io/milestone' }
 }
 
 compileKotlin {
