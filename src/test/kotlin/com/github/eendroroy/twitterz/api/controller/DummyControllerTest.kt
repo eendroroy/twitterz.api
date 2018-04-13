@@ -25,7 +25,7 @@ class DummyControllerTest : BaseTester() {
 
     @Test
     @Throws(Exception::class)
-    fun testArticleShouldBeCreated() {
+    fun testDummyControllerShouldReturnSuccess() {
         val resultAsset = template!!.getForEntity("/dummy", Map::class.java)
         Assert.assertNotNull(resultAsset.body!!["success"])
         Assert.assertEquals(resultAsset.body!!["success"], true)
