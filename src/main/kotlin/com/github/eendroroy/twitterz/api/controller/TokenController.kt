@@ -4,7 +4,6 @@ import com.github.eendroroy.twitterz.api.entity.User
 import com.github.eendroroy.twitterz.api.security.PasswordEncoder
 import com.github.eendroroy.twitterz.api.security.TokenGenerator
 import com.github.eendroroy.twitterz.api.service.UserService
-import com.github.eendroroy.twitterz.api.utils.APIPaths
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.MediaTypes
 import org.springframework.http.HttpStatus
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletResponse
  */
 
 @RestController
-@RequestMapping(path = [APIPaths.TOKEN_PATH])
+@RequestMapping(path = ["token"])
 class TokenController {
     @Autowired
     private lateinit var userService: UserService
@@ -30,7 +29,7 @@ class TokenController {
     private lateinit var tokenGenerator: TokenGenerator
 
     @RequestMapping(
-        path = [APIPaths.TOKEN_CREATE_PATH], method = [RequestMethod.POST],
+        path = ["create"], method = [RequestMethod.POST],
         consumes = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE]
     )
