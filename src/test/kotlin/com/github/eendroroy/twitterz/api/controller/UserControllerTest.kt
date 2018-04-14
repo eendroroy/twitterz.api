@@ -2,6 +2,7 @@ package com.github.eendroroy.twitterz.api.controller
 
 import com.github.eendroroy.twitterz.api.resource.UserResource
 import com.github.eendroroy.twitterz.api.test.helper.BaseTester
+import org.junit.AfterClass
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -16,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTest : BaseTester(){
     @Autowired
-    private val template: TestRestTemplate? = null
+    private lateinit var template: TestRestTemplate
 
     @Before
     @Throws(Exception::class)
@@ -34,7 +35,7 @@ class UserControllerTest : BaseTester(){
                 "\"email\": \"u$id@e.c\"," +
                 "\"password\": \"password\"" +
                 "}}")
-        val resultAsset = template!!.postForEntity("/users/register", user, UserResource::class.java)
+        val resultAsset = template.postForEntity("/users/register", user, UserResource::class.java)
         Assert.assertNotNull(resultAsset.body!!.user)
         Assert.assertNotNull(resultAsset.body!!.user!!.id)
         Assert.assertEquals(resultAsset.body!!.user!!.userName, "user$id")
