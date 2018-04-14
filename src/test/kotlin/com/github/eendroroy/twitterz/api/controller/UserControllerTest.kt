@@ -1,13 +1,17 @@
 package com.github.eendroroy.twitterz.api.controller
 
+import com.github.eendroroy.twitterz.api.repository.UserRepository
 import com.github.eendroroy.twitterz.api.resource.UserResource
 import com.github.eendroroy.twitterz.api.test.helper.BaseTester
+import org.junit.After
 import org.junit.AfterClass
 import org.junit.Assert
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
@@ -19,10 +23,31 @@ class UserControllerTest : BaseTester(){
     @Autowired
     private lateinit var template: TestRestTemplate
 
+    @Qualifier("userRepository")
+    @Autowired
+    private lateinit var userRepository: UserRepository
+
     @Before
     @Throws(Exception::class)
-    fun setup() {
+    fun setup() {}
 
+    @After
+    @Throws(Exception::class)
+    fun cleanup() {}
+
+    companion object {
+
+        @JvmStatic
+        @BeforeClass
+        @Throws(Exception::class)
+        fun setupAll() {}
+
+        @JvmStatic
+        @AfterClass
+        @Throws(Exception::class)
+        fun cleanupAll() {
+//            UserControllerTest().userRepository.deleteAll()
+        }
     }
 
     @Test
