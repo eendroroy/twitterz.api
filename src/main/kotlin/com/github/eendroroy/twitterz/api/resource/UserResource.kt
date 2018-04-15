@@ -13,9 +13,15 @@ import org.springframework.hateoas.core.Relation
 class UserResource() : ResourceSupport() {
 
     var user: User? = null
+    var message: String? = null
 
     constructor(user: User?) : this() {
         this.user = user
+    }
+
+    constructor(user: User?, message: String?) : this() {
+        this.user = user
+        this.message = message
     }
 
     constructor(userResource: UserResource?) : this() {
