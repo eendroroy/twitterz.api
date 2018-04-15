@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
+import org.springframework.http.ResponseEntity.unprocessableEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -44,16 +45,16 @@ class UserController {
     @PostMapping("register")
     @ResponseBody
     fun register(@RequestBody userResource: UserResource, response: HttpServletResponse): ResponseEntity<Resource<UserResource>> {
+        val user = userResource.user!!
         return try {
-            val user = userResource.user!!
             user.password = passwordEncoder.encode(user.password!!)
             user.active = 1
             userService.saveUser(user)
-            val resource: Resource<UserResource> = Resource(UserResource(user))
-            ok(resource)
+            ok(Resource(UserResource(user)))
         } catch (exception: DataIntegrityViolationException) {
-            response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-            throw Exception()
+            ResponseEntity(Resource(UserResource(user, exception.message)), HttpStatus.NOT_ACCEPTABLE)
+        } catch (exception: NullPointerException) {
+            ResponseEntity(Resource(UserResource(user, exception.message)), HttpStatus.UNPROCESSABLE_ENTITY)
         }
     }
 
