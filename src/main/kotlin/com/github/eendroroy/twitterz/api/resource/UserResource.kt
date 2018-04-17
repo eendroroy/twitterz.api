@@ -15,17 +15,13 @@ class UserResource() : ResourceSupport() {
     var user: User? = null
     var message: String? = null
 
-    constructor(user: User?) : this() {
-        this.user = user
-    }
-
     constructor(user: User?, message: String?) : this() {
         this.user = user
         this.message = message
     }
 
-    constructor(userResource: UserResource?) : this() {
-        this.user = userResource!!.user
-    }
+    constructor(user: User?) : this(user, null)
+
+//    constructor(userResource: UserResource?) : this(userResource!!.user, null)
 
 }
