@@ -39,7 +39,7 @@ class TokenController {
         val password: String = body["password"]!!
         val user: User? = userService.findUserByEmail(email)
         if (user == null) {
-            response.status = HttpStatus.UNAUTHORIZED.value()
+            response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
             return mutableMapOf("success" to false, "token" to null, "message" to "user not found")
         }
         if (passwordEncoder.match(password, user.password!!)) {
@@ -48,7 +48,7 @@ class TokenController {
             userService.saveUser(user)
             return mutableMapOf("success" to true, "token" to token, "message" to null)
         }
-        response.status = HttpStatus.UNAUTHORIZED.value()
+        response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
         return mutableMapOf("success" to false, "token" to null,  "message" to "password did not match")
     }
 }
