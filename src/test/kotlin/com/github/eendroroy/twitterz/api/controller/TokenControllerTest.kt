@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
 @RunWith(SpringJUnit4ClassRunner::class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserControllerTest : BaseTester(){
+class TokenControllerTest : BaseTester() {
     @Autowired
     private lateinit var template: TestRestTemplate
 
@@ -51,41 +51,39 @@ class UserControllerTest : BaseTester(){
 
     @Test
     @Throws(Exception::class)
-    fun testUserShouldBeCreated() {
-        val id = (0..1000).shuffled().last()
-        val user = getHttpEntity("{\"user\": {" +
-                "\"userName\": \"user$id\"," +
-                "\"fullName\": \"user$id\"," +
-                "\"email\": \"u$id@e.c\"," +
-                "\"password\": \"password\"" +
-                "}}")
-        val resultAsset = template.postForEntity("/users/register", user, UserResource::class.java)
-        Assert.assertNotNull(resultAsset.body!!.user)
-        Assert.assertNotNull(resultAsset.body!!.user!!.id)
-        Assert.assertEquals(resultAsset.body!!.user!!.userName, "user$id")
-        Assert.assertEquals(resultAsset.body!!.user!!.fullName, "user$id")
-        Assert.assertEquals(resultAsset.body!!.user!!.active, 1)
+    fun testShouldCreateToken() {
+        val request = getHttpEntity("{\"email\": \"user0@example.com\", \"password\": \"user0password\"}")
+        val resultAsset = template.postForEntity("/token/create", request, Map::class.java)
+        Assert.assertEquals(resultAsset.statusCodeValue, HttpStatus.OK.value())
+        Assert.assertEquals(resultAsset.body!!.get("success"), true)
+        Assert.assertNotEquals(resultAsset.body!!.get("token").toString().length, 0)
+        Assert.assertEquals(
+                resultAsset.body!!.get("token").toString(),
+                userRepository.findByEmail("user0@example.com")!!.accessToken
+        )
+        Assert.assertEquals(resultAsset.body!!.get("message"), null)
     }
 
     @Test
     @Throws(Exception::class)
-    fun testRegisterShouldReturnNotAcceptable() {
-        val user = getHttpEntity("{\"user\": {" +
-                "\"userName\": \"user0\"," +
-                "\"fullName\": \"user0\"," +
-                "\"email\": \"user0@example.com\"," +
-                "\"password\": \"password\"" +
-                "}}")
-        val resultAsset = template.postForEntity("/users/register", user, UserResource::class.java)
-        Assert.assertNotNull(resultAsset.body!!.message)
-        Assert.assertEquals(resultAsset.statusCodeValue, HttpStatus.NOT_ACCEPTABLE.value())
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testRegisterShouldReturnUnProcessableEntity() {
-        val user = getHttpEntity("{\"user\": {}}")
-        val resultAsset = template.postForEntity("/users/register", user, UserResource::class.java)
+    fun testShouldNotFindUser() {
+        val request = getHttpEntity("{\"email\": \"user@example.com\", \"password\": \"user0password\"}")
+        val resultAsset = template.postForEntity("/token/create", request, Map::class.java)
         Assert.assertEquals(resultAsset.statusCodeValue, HttpStatus.UNPROCESSABLE_ENTITY.value())
+        Assert.assertEquals(resultAsset.body!!.get("success"), false)
+        Assert.assertEquals(resultAsset.body!!.get("token"), null)
+        Assert.assertEquals(resultAsset.body!!.get("message"), "user not found")
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun testShouldNotCreateToken() {
+        val request = getHttpEntity("{\"email\": \"user0@example.com\", \"password\": \"user_password\"}")
+        val resultAsset = template.postForEntity("/token/create", request, Map::class.java)
+        Assert.assertEquals(resultAsset.statusCodeValue, HttpStatus.UNPROCESSABLE_ENTITY.value())
+        Assert.assertEquals(resultAsset.body!!.get("success"), false)
+        Assert.assertEquals(resultAsset.body!!.get("token"), null)
+        Assert.assertEquals(resultAsset.body!!.get("message"), "password did not match")
+    }
+
 }

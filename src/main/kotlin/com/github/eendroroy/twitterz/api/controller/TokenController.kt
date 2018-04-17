@@ -34,21 +34,21 @@ class TokenController {
 
     @PostMapping("create")
     @ResponseBody
-    fun register(@RequestBody body: Map<String, String>,response: HttpServletResponse): Map<String, Any> {
+    fun register(@RequestBody body: Map<String, String>,response: HttpServletResponse): Map<String, Any?> {
         val email: String = body["email"]!!
         val password: String = body["password"]!!
         val user: User? = userService.findUserByEmail(email)
         if (user == null) {
-            response.status = HttpStatus.UNAUTHORIZED.value()
-            return mutableMapOf("success" to true, "details" to "user not found")
+            response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
+            return mutableMapOf("success" to false, "token" to null, "message" to "user not found")
         }
         if (passwordEncoder.match(password, user.password!!)) {
             val token: String = tokenGenerator.token()!!
             user.accessToken = token
             userService.saveUser(user)
-            return mutableMapOf("success" to true, "token" to token)
+            return mutableMapOf("success" to true, "token" to token, "message" to null)
         }
-        response.status = HttpStatus.UNAUTHORIZED.value()
-        return mutableMapOf("success" to false, "details" to "password did not match")
+        response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
+        return mutableMapOf("success" to false, "token" to null,  "message" to "password did not match")
     }
 }
