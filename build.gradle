@@ -57,6 +57,13 @@ compileTestKotlin {
     }
 }
 
+kotlinter {
+    ignoreFailures = false
+    indentSize = 4
+    continuationIndentSize = 2
+    reporters = ['checkstyle', 'html', 'json', 'plain']
+}
+
 cargo {
     containerId = 'tomcat8x'
     port = 8080
