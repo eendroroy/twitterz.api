@@ -1,6 +1,15 @@
 package com.github.eendroroy.twitterz.api.resource
 
+import com.github.eendroroy.twitterz.api.controller.TokenController
 import org.springframework.hateoas.ResourceSupport
+import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
+import org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
+import javax.servlet.http.HttpServletResponse
+
+/**
+ *
+ * @author indrajit
+ */
 
 class TokenResource() : ResourceSupport() {
     var token: String? = null
@@ -11,6 +20,7 @@ class TokenResource() : ResourceSupport() {
         this.token = token
         this.message = message
         this.success = success
+        this.add(linkTo(methodOn(TokenController::class.java).create(mapOf("test" to "test"))).withSelfRel())
     }
 
     constructor(token: String?) : this(token, null, true)
