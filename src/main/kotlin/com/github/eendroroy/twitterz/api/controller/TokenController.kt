@@ -1,13 +1,17 @@
 package com.github.eendroroy.twitterz.api.controller
 
 import com.github.eendroroy.twitterz.api.entity.User
+import com.github.eendroroy.twitterz.api.resource.TokenResource
+import com.github.eendroroy.twitterz.api.resource.UserResource
 import com.github.eendroroy.twitterz.api.security.PasswordEncoder
 import com.github.eendroroy.twitterz.api.security.TokenGenerator
 import com.github.eendroroy.twitterz.api.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.MediaTypes
+import org.springframework.hateoas.Resource
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
 
@@ -34,21 +38,19 @@ class TokenController {
 
     @PostMapping("create")
     @ResponseBody
-    fun register(@RequestBody body: Map<String, String>,response: HttpServletResponse): Map<String, Any?> {
+    fun register(@RequestBody body: Map<String, String>,response: HttpServletResponse): ResponseEntity<Resource<TokenResource>> {
         val email: String = body["email"]!!
         val password: String = body["password"]!!
         val user: User? = userService.findUserByEmail(email)
         if (user == null) {
-            response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-            return mutableMapOf("success" to false, "token" to null, "message" to "user not found")
-        }
-        if (passwordEncoder.match(password, user.password!!)) {
+            return ResponseEntity(Resource(TokenResource("user not found", 0)), HttpStatus.UNPROCESSABLE_ENTITY)
+        } else if (passwordEncoder.match(password, user.password!!)) {
             val token: String = tokenGenerator.token()!!
             user.accessToken = token
             userService.saveUser(user)
-            return mutableMapOf("success" to true, "token" to token, "message" to null)
+            return ResponseEntity.ok(Resource(TokenResource(token)))
         }
-        response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-        return mutableMapOf("success" to false, "token" to null,  "message" to "password did not match")
+
+        return ResponseEntity(Resource(TokenResource("password did not match", 0)), HttpStatus.UNPROCESSABLE_ENTITY)
     }
 }
