@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
-import org.springframework.http.ResponseEntity.unprocessableEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -44,7 +43,7 @@ class UserController {
 
     @PostMapping("register")
     @ResponseBody
-    fun register(@RequestBody userResource: UserResource, response: HttpServletResponse): ResponseEntity<Resource<UserResource>> {
+    fun register(@RequestBody userResource: UserResource): ResponseEntity<Resource<UserResource>> {
         val user = userResource.user!!
         return try {
             user.password = passwordEncoder.encode(user.password!!)
