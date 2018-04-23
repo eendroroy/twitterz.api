@@ -41,7 +41,7 @@ class TokenController {
 
     @PostMapping("create")
     @ResponseBody
-    fun register(@RequestBody body: Map<String, String>,response: HttpServletResponse): ResponseEntity<Resource<TokenResource>> {
+    fun create(@RequestBody body: Map<String, String>): ResponseEntity<Resource<TokenResource>> {
         val email: String = body["email"]!!
         val password: String = body["password"]!!
         val user: User? = userService.findUserByEmail(email)
