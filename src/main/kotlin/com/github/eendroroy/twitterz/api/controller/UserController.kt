@@ -45,16 +45,21 @@ class UserController {
     @ResponseBody
     fun register(@RequestBody userResource: UserResource): ResponseEntity<Resource<UserResource>> {
         val user = userResource.user!!
-        if (userService.findUserByEmail(user.email!!) != null) {
-            return ResponseEntity(Resource(UserResource(user, "email address already exists.")), HttpStatus.NOT_ACCEPTABLE)
-        } else if (userService.findUserByUserName(user.userName!!) != null) {
-            return ResponseEntity(Resource(UserResource(user, "user name already exists.")), HttpStatus.NOT_ACCEPTABLE)
-        }
         return try {
-            user.password = passwordEncoder.encode(user.password!!)
-            user.active = 1
-            userService.saveUser(user)
-            ok(Resource(UserResource(user)))
+            when {
+                userService.findUserByEmail(user.email!!) != null -> ResponseEntity(
+                        Resource(UserResource(user, "email address already exists.")), HttpStatus.NOT_ACCEPTABLE
+                )
+                userService.findUserByUserName(user.userName!!) != null -> ResponseEntity(
+                        Resource(UserResource(user, "user name already exists.")), HttpStatus.NOT_ACCEPTABLE
+                )
+                else -> {
+                    user.password = passwordEncoder.encode(user.password!!)
+                    user.active = 1
+                    userService.saveUser(user)
+                    ok(Resource(UserResource(user)))
+                }
+            }
         } catch (exception: DataIntegrityViolationException) {
             ResponseEntity(Resource(UserResource(user, exception.message)), HttpStatus.NOT_ACCEPTABLE)
         } catch (exception: NullPointerException) {
