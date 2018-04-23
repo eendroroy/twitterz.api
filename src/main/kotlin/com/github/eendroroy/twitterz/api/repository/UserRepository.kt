@@ -13,5 +13,7 @@ import org.springframework.stereotype.Repository
 interface UserRepository : JpaRepository<User, Long> {
     fun findByEmail(email: String): User?
 
+    fun findByUserName(UserName: String): User?
+
     fun findByAccessToken(accessToken: String): User?
 }
