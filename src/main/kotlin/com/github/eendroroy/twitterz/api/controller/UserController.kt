@@ -45,6 +45,11 @@ class UserController {
     @ResponseBody
     fun register(@RequestBody userResource: UserResource): ResponseEntity<Resource<UserResource>> {
         val user = userResource.user!!
+        if (userService.findUserByEmail(user.email!!) != null) {
+            return ResponseEntity(Resource(UserResource(user, "email address already exists.")), HttpStatus.NOT_ACCEPTABLE)
+        } else if (userService.findUserByUserName(user.userName!!) != null) {
+            return ResponseEntity(Resource(UserResource(user, "user name already exists.")), HttpStatus.NOT_ACCEPTABLE)
+        }
         return try {
             user.password = passwordEncoder.encode(user.password!!)
             user.active = 1
