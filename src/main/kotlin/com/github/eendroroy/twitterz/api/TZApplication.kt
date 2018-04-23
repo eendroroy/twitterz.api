@@ -11,7 +11,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  */
 
 @SpringBootApplication
-open class TZApplication : SpringBootServletInitializer() {
+class TZApplication : SpringBootServletInitializer() {
     override fun configure(application: SpringApplicationBuilder): SpringApplicationBuilder {
         return application.sources(TZApplication::class.java)
     }
