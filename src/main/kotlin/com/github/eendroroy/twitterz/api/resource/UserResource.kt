@@ -27,5 +27,4 @@ class UserResource() : ResourceSupport() {
     constructor(user: User?) : this(user, null)
 
 //    constructor(userResource: UserResource?) : this(userResource!!.user, null)
-
 }

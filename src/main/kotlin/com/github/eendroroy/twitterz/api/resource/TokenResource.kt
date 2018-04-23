@@ -4,7 +4,6 @@ import com.github.eendroroy.twitterz.api.controller.TokenController
 import org.springframework.hateoas.ResourceSupport
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
-import javax.servlet.http.HttpServletResponse
 
 /**
  *

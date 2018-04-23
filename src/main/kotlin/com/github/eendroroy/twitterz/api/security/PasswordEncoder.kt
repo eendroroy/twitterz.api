@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration
  */
 
 @Configuration
-class PasswordEncoder{
+class PasswordEncoder {
     fun encode(password: String): String? {
         return BCrypt.hashpw(password, BCrypt.gensalt())
     }

@@ -65,9 +65,9 @@ class UserController {
     @PostMapping("{userId}/follow")
     @ResponseBody
     fun follow(
-            @PathVariable("userId") userId: Long,
-            request: HttpServletRequest,
-            response: HttpServletResponse
+        @PathVariable("userId") userId: Long,
+        request: HttpServletRequest,
+        response: HttpServletResponse
     ): ResponseEntity<Resources<UserResource>> {
         return try {
             val user: User = userService.findUserByToken(request.getHeader("token"))!!

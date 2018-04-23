@@ -2,7 +2,6 @@ package com.github.eendroroy.twitterz.api.controller
 
 import com.github.eendroroy.twitterz.api.entity.User
 import com.github.eendroroy.twitterz.api.repository.UserRepository
-import com.github.eendroroy.twitterz.api.resource.UserResource
 import com.github.eendroroy.twitterz.api.security.PasswordEncoder
 import com.github.eendroroy.twitterz.api.test.helper.BaseTester
 import org.junit.After
@@ -17,9 +16,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
-
 @RunWith(SpringJUnit4ClassRunner::class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TokenControllerTest : BaseTester() {
     @Autowired
     private lateinit var template: TestRestTemplate
@@ -85,5 +83,4 @@ class TokenControllerTest : BaseTester() {
         Assert.assertEquals(resultAsset.body!!.get("token"), null)
         Assert.assertEquals(resultAsset.body!!.get("message"), "password did not match")
     }
-
 }

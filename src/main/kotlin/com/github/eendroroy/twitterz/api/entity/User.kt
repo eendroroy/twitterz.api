@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import org.springframework.format.annotation.DateTimeFormat
-import java.util.*
+import java.util.Date
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -21,7 +21,6 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Past
 
-
 /**
  *
  * @author indrajit
@@ -31,8 +30,8 @@ import javax.validation.constraints.Past
 @Table(name = "users")
 class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="user_id_seq")
-    @SequenceGenerator(name="user_id_seq", sequenceName="users_user_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
+    @SequenceGenerator(name = "user_id_seq", sequenceName = "users_user_id_seq", allocationSize = 1)
     @Column(name = "user_id")
     var id: Long? = null
 

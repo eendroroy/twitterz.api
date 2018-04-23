@@ -17,10 +17,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
-
 @RunWith(SpringJUnit4ClassRunner::class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserControllerTest : BaseTester(){
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class UserControllerTest : BaseTester() {
     @Autowired
     private lateinit var template: TestRestTemplate
 

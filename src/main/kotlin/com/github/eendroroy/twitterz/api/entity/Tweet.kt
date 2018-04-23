@@ -22,8 +22,8 @@ import javax.validation.constraints.NotEmpty
 @Table(name = "tweets")
 class Tweet {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="tweet_id_seq")
-    @SequenceGenerator(name="tweet_id_seq", sequenceName="tweets_tweet_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tweet_id_seq")
+    @SequenceGenerator(name = "tweet_id_seq", sequenceName = "tweets_tweet_id_seq", allocationSize = 1)
     @Column(name = "tweet_id")
     var id: Long? = null
 
@@ -33,6 +33,6 @@ class Tweet {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
+    @JoinColumn(name = "user_id", nullable = false)
     var user: User? = null
 }

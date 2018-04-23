@@ -21,5 +21,4 @@ class TweetResource() : ResourceSupport() {
     constructor(tweetResource: TweetResource?) : this() {
         this.tweet = tweetResource!!.tweet
     }
-
 }

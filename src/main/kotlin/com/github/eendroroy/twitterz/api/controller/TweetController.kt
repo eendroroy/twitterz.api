@@ -54,9 +54,9 @@ class TweetController {
     @GetMapping("{tweetId}")
     @ResponseBody
     fun getTweetById(
-            @PathVariable("tweetId") tweetId: Long,
-            request: HttpServletRequest,
-            response: HttpServletResponse
+        @PathVariable("tweetId") tweetId: Long,
+        request: HttpServletRequest,
+        response: HttpServletResponse
     ): ResponseEntity<Resource<TweetResource>> {
         val tweet: Tweet? = tweetService.findTweetById(tweetId) ?: throw Exception()
         val resources: Resource<TweetResource> = Resource(TweetResource(tweet!!))
@@ -66,9 +66,9 @@ class TweetController {
     @DeleteMapping("{tweetId}")
     @ResponseBody
     fun deleteTweetById(
-            @PathVariable("tweetId") tweetId: Long,
-            request: HttpServletRequest,
-            response: HttpServletResponse
+        @PathVariable("tweetId") tweetId: Long,
+        request: HttpServletRequest,
+        response: HttpServletResponse
     ): Map<String, Any?> {
         val user: User = userService.findUserByToken(request.getHeader("token"))!!
         val tweet: Tweet = user.tweets.find { it!!.id == tweetId } ?: return mapOf(
@@ -85,8 +85,10 @@ class TweetController {
     @PostMapping("")
     @ResponseBody
     fun addTweet(
-            @RequestBody tweet: Tweet?, request: HttpServletRequest, response: HttpServletResponse
-    ) : Map<String, Any?> {
+        @RequestBody tweet: Tweet?,
+        request: HttpServletRequest,
+        response: HttpServletResponse
+    ): Map<String, Any?> {
         return try {
             val user: User = userService.findUserByToken(request.getHeader("token"))!!
             tweet!!.user = user

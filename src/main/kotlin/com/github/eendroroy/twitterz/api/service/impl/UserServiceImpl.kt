@@ -27,7 +27,7 @@ class UserServiceImpl : UserService {
 
     override fun findUserById(userId: Long): User? {
         val user: Optional<User> = userRepository.findById(userId)
-        if(user.isPresent) return user.get()
+        if (user.isPresent) return user.get()
         return null
     }
 
