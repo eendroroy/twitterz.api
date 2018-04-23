@@ -35,6 +35,10 @@ class UserServiceImpl : UserService {
         return userRepository.findByEmail(email)
     }
 
+    override fun findUserByUserName(userName: String): User? {
+        return userRepository.findByUserName(userName)
+    }
+
     override fun saveUser(user: User): User? {
         return userRepository.save(user)
     }

@@ -14,6 +14,8 @@ interface UserService {
 
     fun findUserByEmail(email: String): User?
 
+    fun findUserByUserName(userName: String): User?
+
     fun saveUser(user: User): User?
 
     fun findUserByToken(token: String): User?
