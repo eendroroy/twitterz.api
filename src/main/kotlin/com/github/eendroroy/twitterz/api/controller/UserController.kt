@@ -1,6 +1,11 @@
 package com.github.eendroroy.twitterz.api.controller
 
 import com.github.eendroroy.twitterz.api.entity.User
+import com.github.eendroroy.twitterz.api.exceptions.AlreadyFollowingException
+import com.github.eendroroy.twitterz.api.exceptions.EmailAlreadyExistsException
+import com.github.eendroroy.twitterz.api.exceptions.FollowSelfException
+import com.github.eendroroy.twitterz.api.exceptions.UserNameAlreadyExistsException
+import com.github.eendroroy.twitterz.api.exceptions.UserNotFoundException
 import com.github.eendroroy.twitterz.api.resource.UserResource
 import com.github.eendroroy.twitterz.api.security.PasswordEncoder
 import com.github.eendroroy.twitterz.api.service.UserService
@@ -47,12 +52,8 @@ class UserController {
         val user = userResource.user!!
         return try {
             when {
-                userService.findUserByEmail(user.email!!) != null -> ResponseEntity(
-                        Resource(UserResource(user, "email address already exists.")), HttpStatus.NOT_ACCEPTABLE
-                )
-                userService.findUserByUserName(user.userName!!) != null -> ResponseEntity(
-                        Resource(UserResource(user, "user name already exists.")), HttpStatus.NOT_ACCEPTABLE
-                )
+                userService.findUserByEmail(user.email!!) != null -> throw EmailAlreadyExistsException()
+                userService.findUserByUserName(user.userName!!) != null -> throw UserNameAlreadyExistsException()
                 else -> {
                     user.password = passwordEncoder.encode(user.password!!)
                     user.active = 1
@@ -79,18 +80,9 @@ class UserController {
             val followUser: User? = userService.findUserById(userId)
 
             when {
-                followUser == null -> {
-                    response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-                    throw Exception("can not find user with id {$userId}.")
-                }
-                user.id == followUser.id -> {
-                    response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-                    throw Exception("can not follow self.")
-                }
-                user.followings.contains(followUser) -> {
-                    response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
-                    throw Exception("user {$userId} is already being followed.")
-                }
+                followUser == null -> throw UserNotFoundException()
+                user.id == followUser.id -> throw FollowSelfException()
+                user.followings.contains(followUser) -> throw AlreadyFollowingException()
             }
             user.followings = user.followings.plus(followUser)
             userService.saveUser(user)
