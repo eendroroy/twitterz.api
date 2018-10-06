@@ -1,8 +1,8 @@
 package com.github.eendroroy.twitterz.api.security
 
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.SignatureAlgorithm
-import io.jsonwebtoken.impl.crypto.MacProvider
 import org.springframework.context.annotation.Configuration
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class TokenGenerator {
     fun token(): String? {
-        val key = MacProvider.generateKey()
-        return Jwts.builder().setSubject("twitter.z.api").signWith(SignatureAlgorithm.HS512, key).compact()
+        val key = Keys.secretKeyFor(SignatureAlgorithm.HS256)
+        return Jwts.builder().setSubject("twitter.z.api").signWith(key).compact()
     }
 }
