@@ -72,12 +72,12 @@ class TweetController {
     ): Map<String, Any?> {
         val user: User = userService.findUserByToken(request.getHeader("token"))!!
         val tweet: Tweet = user.tweets.find { it!!.id == tweetId } ?: return mapOf(
-                "Success" to false,
+                "success" to false,
                 "details" to "Tweet not found by id {$tweetId}"
         )
         tweetService.deleteTweet(tweet)
         return mapOf(
-                "Success" to true,
+                "success" to true,
                 "details" to "Tweet deleted with id {$tweetId}"
         )
     }
@@ -93,7 +93,7 @@ class TweetController {
             val user: User = userService.findUserByToken(request.getHeader("token"))!!
             tweet!!.user = user
             tweetService.saveTweet(tweet)
-            mapOf("Success" to true, "_embedded" to mapOf<Any, Any>("tweet" to tweet))
+            mapOf("success" to true, "_embedded" to mapOf<Any, Any>("tweet" to tweet))
         } catch (exception: DataIntegrityViolationException) {
             response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
             mapOf("success" to false, "details" to exception.message, "_embedded" to mapOf("tweet" to tweet))
